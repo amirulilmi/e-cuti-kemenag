@@ -99,7 +99,7 @@ class Staff_model extends CI_Model {
      * Get assigned leave types for an employee
      */
     public function get_assigned_leave_types($emp_id) {
-        $this->db->select('lt.leave_type, lt.assign_days, elt.available_days');
+        $this->db->select('lt.leave_type, lt.assign_days, elt.available_days,elt.n1,elt.n2,elt.leave_type_id');
         $this->db->from('tblleavetype lt');
         $this->db->join('employee_leave_types elt', 'lt.id = elt.leave_type_id');
         $this->db->where('elt.emp_id', $emp_id);
@@ -120,7 +120,7 @@ class Staff_model extends CI_Model {
      * Get assigned leave types with IDs for an employee
      */
     public function get_assigned_leave_types_with_ids($emp_id) {
-        $this->db->select('leave_type_id, available_days');
+        $this->db->select('leave_type_id, available_days, n1, n2');
         $this->db->where('emp_id', $emp_id);
         $query = $this->db->get('employee_leave_types');
         
@@ -130,6 +130,23 @@ class Staff_model extends CI_Model {
         }
         return $result;
     }
+
+    // public function get_assigned_leave_types_with_ids($emp_id) {
+    //     $this->db->select('leave_type_id, available_days, n1, n2');
+    //     $this->db->where('emp_id', $emp_id);
+    //     $query = $this->db->get('employee_leave_types');
+        
+    //     $result = array();
+    //     foreach($query->result_array() as $row) {
+    //         $result[$row['leave_type_id']] = [
+    //             'available_days' => $row['available_days'],
+    //             'n1' => $row['n1'],
+    //             'n2' => $row['n2']
+    //         ];
+    //     }
+    //     return $result;
+    // }
+
 
     public function get_department_name($dept_id) {
         $this->db->select('department_name');

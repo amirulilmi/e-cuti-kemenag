@@ -121,6 +121,13 @@
                                 <span class="pcoded-mtext">Cuti Saya</span>
                             </a>
                         </li>
+                        <li class="<?php echo ($page_name == 'FAQ') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('FAQ/index') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-folder"></i></span>
+                                <span class="pcoded-mtext">Template Surat</span>
+                            </a>
+                        </li>
+
                         </li>
 
                     </ul>

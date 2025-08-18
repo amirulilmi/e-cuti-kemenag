@@ -57,7 +57,7 @@
                                                                         </td>
                                                                         <td><?= $row['assign_days']; ?></td>
                                                                         <td>
-                                                                            <?php if ($row['allowsat'] == 1): ?>
+                                                                            <?php if ($row['leave_allowsat'] == 1): ?>
                                                                                 <span
                                                                                     style="color: green; font-weight: 600;">Ya</span>
                                                                             <?php else: ?>
@@ -66,7 +66,7 @@
                                                                             <?php endif; ?>
                                                                         </td>
                                                                         <td>
-                                                                            <?php if ($row['allowsun'] == 1): ?>
+                                                                            <?php if ($row['leave_allowsun'] == 1): ?>
                                                                                 <span
                                                                                     style="color: green; font-weight: 600;">Ya</span>
                                                                             <?php else: ?>
@@ -94,8 +94,8 @@
                                                                                 data-description="<?= $row['description']; ?>"
                                                                                 data-assigned="<?= $row['assign_days']; ?>"
                                                                                 data-status="<?= $row['status']; ?>"
-                                                                                data-allowsat="<?= $row['allowsat']; ?>"
-                                                                                data-allowsun="<?= $row['allowsun']; ?>">
+                                                                                data-leave_allowsat="<?= $row['leave_allowsat']; ?>"
+                                                                                data-leave_allowsun="<?= $row['leave_allowsun']; ?>">
 
                                                                                 <i class="icofont icofont-ui-edit"></i>
                                                                             </a>
@@ -166,17 +166,17 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label>Perbolehkan Cuti Hari Sabtu</label> <!-- Label tambahan -->
+                                    <label>Perbolehkan Cuti Hari Sabtu</label>
                                     <div class="form-radio">
                                         <div class="radio radiofill radio-inline">
                                             <label>
-                                                <input type="radio" class="allowsat" name="allowsat" value="1">
+                                                <input type="radio" class="leave_allowsat" name="leave_allowsat" value="1">
                                                 <i class="helper"></i>Ya
                                             </label>
                                         </div>
                                         <div class="radio radiofill radio-inline">
                                             <label>
-                                                <input type="radio" class="allowsat" name="allowsat" value="0">
+                                                <input type="radio" class="leave_allowsat" name="leave_allowsat" value="0">
                                                 <i class="helper"></i>Tidak
                                             </label>
                                         </div>
@@ -186,17 +186,17 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-12">
-                                    <label>Perbolehkan Cuti Hari Minggu</label> <!-- Label tambahan -->
+                                    <label>Perbolehkan Cuti Hari Minggu</label> 
                                     <div class="form-radio">
                                         <div class="radio radiofill radio-inline">
                                             <label>
-                                                <input type="radio" class="allowsun" name="allowsun" value="1">
+                                                <input type="radio" class="leave_allowsun" name="leave_allowsun" value="1">
                                                 <i class="helper"></i>Ya
                                             </label>
                                         </div>
                                         <div class="radio radiofill radio-inline">
                                             <label>
-                                                <input type="radio" class="allowsun" name="allowsun" value="0">
+                                                <input type="radio" class="leave_allowsun" name="leave_allowsun" value="0">
                                                 <i class="helper"></i>Tidak
                                             </label>
                                         </div>
@@ -250,8 +250,8 @@
                     description: $('.description').val(),
                     assigned: $('.assigned').val(),
                     status: $('input[name="status"]:checked').val(),
-                    allowsat: $('input[name="allowsat"]:checked').val(),
-                    allowsun: $('input[name="allowsun"]:checked').val(),
+                    leave_allowsat: $('input[name="leave_allowsat"]:checked').val(),
+                    leave_allowsun: $('input[name="leave_allowsun"]:checked').val(),
                     action: "save",
                 };
                 if (!data.dname.trim() || !data.description.trim() || !data.assigned.trim() || !data.status.trim()) {
@@ -293,8 +293,8 @@
                 var description = $(this).data('description');
                 var assigned = $(this).data('assigned');
                 var status = $(this).data('status');
-                var allowsat = $(this).data('allowsat');
-                var allowsun = $(this).data('allowsun');
+                var leave_allowsat = $(this).data('leave_allowsat');
+                var leave_allowsun = $(this).data('leave_allowsun');
                 // console.log('ini dia');
                 // console.log(allowsat, allowsun);
 
@@ -303,8 +303,8 @@
                 $('#modalleavetype .assigned').val(assigned);
                 $('#modalleavetype .description').val(description);
                 $('#modalleavetype .status[value="' + status + '"]').prop('checked', true);
-                $('#modalleavetype .allowsat[value="' + allowsat + '"]').prop('checked', true);
-                $('#modalleavetype .allowsun[value="' + allowsun + '"]').prop('checked', true);
+                $('#modalleavetype .leave_allowsat[value="' + leave_allowsat + '"]').prop('checked', true);
+                $('#modalleavetype .leave_allowsun[value="' + leave_allowsun + '"]').prop('checked', true);
 
                 $('#save-btn').hide();
                 $('#update-btn').show();
@@ -321,8 +321,8 @@
                     description: $('.description').val(),
                     assigned: $('.assigned').val(),
                     status: $('input[name="status"]:checked').val(),
-                    allowsat: $('input[name="allowsat"]:checked').val(),
-                    allowsun: $('input[name="allowsun"]:checked').val(),
+                    leave_allowsat: $('input[name="leave_allowsat"]:checked').val(),
+                    leave_allowsun: $('input[name="leave_allowsun"]:checked').val(),
                     action: "update",
                 };
                 if (!data.dname.trim() || !data.description.trim() || !data.assigned.trim() || !data.status.trim()) {

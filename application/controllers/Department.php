@@ -37,6 +37,7 @@ class Department extends CI_Controller
         $data['departments'] = $departments;
         // $data['totalStaff'] = $totalStaff;
 
+        // print_r($departments);exit;
         $data['page_name'] = 'department';
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar');
@@ -57,7 +58,9 @@ class Department extends CI_Controller
 
         $data = [
             'department_name' => $this->input->post('department_name'),
-            'department_desc' => $this->input->post('department_desc')
+            'department_desc' => $this->input->post('department_desc'),
+            'dept_allowsun' => $this->input->post('dept_allowsun'),
+            'dept_allowsat' => $this->input->post('dept_allowsat')
         ];
 
         if ($this->Department_model->insert($data)) {
@@ -81,7 +84,9 @@ class Department extends CI_Controller
 
         $data = [
             'department_name' => $this->input->post('department_name'),
-            'department_desc' => $this->input->post('department_desc')
+            'department_desc' => $this->input->post('department_desc'),
+            'dept_allowsun' => $this->input->post('dept_allowsun'),
+            'dept_allowsat' => $this->input->post('dept_allowsat'),
         ];
 
         if ($this->Department_model->update($id, $data)) {

@@ -74,10 +74,10 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="personal" role="tabpanel">
                             <div class="row">
-                                <div class="col-xl-3">
+                                <div class="col-xl-4">
                                     <!-- user contact card left side start -->
                                     <div class="card">
-                                        <div class="card-block groups-contact">
+                                        <div class="card-block groups-contact" style="margin-bottom:-43px">
                                             <div class="card-header">
                                                 <h5 class="card-header-text">Assigned Supervisor</h5>
                                                 <?php if ($user_role === 'Admin'): ?>
@@ -116,6 +116,8 @@
                                                                 <th>Jenis Cuti</th>
                                                                 <th>Durasi Cuti</th>
                                                                 <th>Sisa Cuti</th>
+                                                                <th>N1</th>
+                                                                <th>N2</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -125,6 +127,54 @@
                                                                         <td><?php echo htmlspecialchars($leaveType['leave_type']); ?></td>
                                                                         <td><?php echo htmlspecialchars($leaveType['assign_days']); ?></td>
                                                                         <td><?php echo htmlspecialchars($leaveType['available_days']); ?></td>
+                                                                                    <!-- Kolom N1 -->
+                                                                        <td>
+                                                                            <?php echo htmlspecialchars($leaveType['n1'] !== null ? $leaveType['n1'] : 0); ?>
+                                                                            
+                                                                            <!-- Tombol tambah N1 -->
+                                                                            <button type="button" class="btn btn-success btn-sm p-1 ml-1 addNBtn" 
+                                                                                    style="font-size:0.75rem; background-color:#0AC282; border:none;"
+                                                                                    data-id="<?php echo $leaveType['leave_type_id']; ?>" 
+                                                                                    data-name="<?php echo $leaveType['leave_type']; ?>" 
+                                                                                    data-n="n1" 
+                                                                                    title="Tambah N1">
+                                                                                <i class="icofont icofont-plus"></i>
+                                                                            </button>
+
+                                                                            <!-- Tombol hapus N1 -->
+                                                                            <button type="button" class="btn btn-danger btn-sm p-1 ml-1 deleteNBtn" 
+                                                                                    style="font-size:0.75rem; border:none;"
+                                                                                    data-id="<?php echo $leaveType['leave_type_id']; ?>" 
+                                                                                    data-name="<?php echo $leaveType['leave_type']; ?>" 
+                                                                                    data-n="n1" 
+                                                                                    title="Hapus N1">
+                                                                                <i class="icofont icofont-trash"></i>
+                                                                            </button>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <?php echo htmlspecialchars($leaveType['n2'] !== null ? $leaveType['n2'] : 0); ?>
+                                                                                
+                                                                                <!-- Tombol tambah N2 -->
+                                                                                <button type="button" class="btn btn-success btn-sm p-1 ml-1 addNBtn" 
+                                                                                        style="font-size:0.75rem; background-color:#0AC282; border:none;"
+                                                                                        data-id="<?php echo $leaveType['leave_type_id']; ?>" 
+                                                                                        data-name="<?php echo $leaveType['leave_type']; ?>" 
+                                                                                        data-n="n2" 
+                                                                                        title="Tambah N2">
+                                                                                    <i class="icofont icofont-plus"></i>
+                                                                                </button>
+
+                                                                                <!-- Tombol hapus N2 -->
+                                                                                <button type="button" class="btn btn-danger btn-sm p-1 ml-1 deleteNBtn" 
+                                                                                        style="font-size:0.75rem; border:none;"
+                                                                                        data-id="<?php echo $leaveType['leave_type_id']; ?>" 
+                                                                                        data-name="<?php echo $leaveType['leave_type']; ?>" 
+                                                                                        data-n="n2" 
+                                                                                        title="Hapus N2">
+                                                                                    <i class="icofont icofont-trash"></i>
+                                                                                </button>
+                                                                        </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             <?php else: ?>
@@ -141,7 +191,7 @@
                                     <!-- user contact card left side end -->
                                 </div>
                                 
-                                <div class="col-xl-9">
+                                <div class="col-xl-8">
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <!-- contact data table card start -->
@@ -264,6 +314,7 @@
                                                         <?php
                                                             $isChecked = array_key_exists($leaveType['id'], $assigned_leave_types_ids);
                                                             $isDisabled = $isChecked && $assigned_leave_types_ids[$leaveType['id']] != $leaveType['assign_days'];
+                                                            
                                                         ?>
                                                         <li class="list-group-item justify-content-between">
                                                             <div class="checkbox-fade fade-in-primary">
@@ -278,7 +329,6 @@
                                                                 <span class="text" style="margin-left: 15px;"><?php echo $leaveType['leave_type']; ?></span>
                                                             </div>
                                                             <span class="badge badge-inverse-info"><?php echo $leaveType['assign_days']; ?></span>
-                                                        </li>
                                                     <?php endforeach; ?>
                                                 </ul>
                                             </div>
@@ -302,6 +352,40 @@
                         </div>
                     </div>
                     <!-- Modal Leave Type end-->
+
+                    <!-- Modal Input N1 N2 -->
+                    <div id="modalAddN" class="modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <form id="formAddN" method="post" action="<?php echo base_url('Staff/add_n'); ?>">
+                            <div class="modal-header">
+                            <h5 class="modal-title">Tambah Data untuk <span id="leaveTypeName"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="leave_type_id" id="leaveTypeId">
+                                <input type="hidden" name="employee_id" value="<?php echo $employee['emp_id']; ?>">
+                                <div class="form-group">
+                                    <label for="n1">Nilai N1</label>
+                                    <input type="text" class="form-control" name="n1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="n2">Nilai N2</label>
+                                    <input type="text" class="form-control" name="n2">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+
+
 
                     <!-- Modal Assign Supervisor start -->
                     <div id="edit-supervisor" class="modal fade" role="dialog">
@@ -669,3 +753,122 @@
         });
     });
 </script>
+
+<!-- open modal add n1 n2 -->
+<script>
+$(document).on("click", ".addNBtn", function() {
+    var leaveId = $(this).data("id");
+    var leaveName = $(this).data("name");
+
+    $("#leaveTypeId").val(leaveId);
+    $("#leaveTypeName").text(leaveName);
+    $("#modalAddN").modal("show");
+});
+</script>
+
+<!-- submit add n1 n2-->
+<script>
+$(document).ready(function() {
+    // Submit form pakai AJAX
+    $("#formAddN").on("submit", function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "<?php echo base_url('Staff/add_n_employee'); ?>",
+            type: "POST",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function(response) {
+                $("#modalAddN").modal("hide");
+                if (response.status === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: response.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    $("#modalAddN").modal("hide");
+
+                    // Optional: reload halaman atau refresh bagian tertentu
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: response.message
+                    });
+                }
+            },
+            error: function() {
+                $("#modalAddN").modal("hide");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Terjadi kesalahan server!"
+                });
+            }
+        });
+    });
+});
+</script>
+
+<!-- delete n1 n2 -->
+<script>
+$(document).on("click", ".deleteNBtn", function() {
+    var leaveTypeId = $(this).data("id");
+    var empId       = "<?php echo $employee['emp_id']; ?>"; // sesuaikan
+    var nColumn     = $(this).data("n"); // n1 atau n2
+
+    Swal.fire({
+        title: 'Yakin?',
+        text: "Data " + nColumn.toUpperCase() + " akan dihapus!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "<?php echo base_url('Staff/delete_n'); ?>",
+                type: "POST",
+                data: { leave_type_id: leaveTypeId, emp_id: empId, column: nColumn },
+                dataType: "json",
+                success: function(response) {
+                    $("#modalAddN").modal("hide");
+                    if(response.status === "success") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        // Optional: update tampilan real-time
+                        setTimeout(function() { location.reload(); }, 1500);
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Gagal",
+                            text: response.message
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Terjadi kesalahan server!"
+                    });
+                }
+            });
+        }
+    });
+});
+</script>
+

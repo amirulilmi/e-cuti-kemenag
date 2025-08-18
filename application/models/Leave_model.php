@@ -28,16 +28,42 @@ class Leave_model extends CI_Model
 
         return $this->db->insert('tblleave', $data);
     }
+    // public function getLeaveTypesByEmployee($empId)
+    // {
+    //     $this->db->select('lt.id, lt.leave_type, lt.allowsat, lt.allowsun , el.available_days');
+    //     $this->db->from('employee_leave_types el');
+    //     $this->db->join('tblleavetype lt', 'lt.id = el.leave_type_id');
+    //     $this->db->where('el.emp_id', $empId);
+
+    //     $query = $this->db->get();
+    //     return $query->result_array();
+    // }
+
     public function getLeaveTypesByEmployee($empId)
     {
-        $this->db->select('lt.id, lt.leave_type, lt.allowsat, lt.allowsun , el.available_days');
+        $this->db->select('
+            lt.id, 
+            lt.leave_type, 
+            lt.leave_allowsat, 
+            lt.leave_allowsun, 
+            el.available_days,
+            d.id as department_id,
+            d.dept_allowsun,
+            d.dept_allowsat,
+        ');
         $this->db->from('employee_leave_types el');
         $this->db->join('tblleavetype lt', 'lt.id = el.leave_type_id');
+        $this->db->join('tblemployees e', 'e.emp_id = el.emp_id');
+        $this->db->join('tbldepartments d', 'd.id = e.department', 'left'); // pakai left join biar aman
+    
         $this->db->where('el.emp_id', $empId);
-
+    
         $query = $this->db->get();
+
+        
         return $query->result_array();
     }
+
     public function update_leave($leave_id, $data) {
         $this->db->where('id', $leave_id);
         return $this->db->update('tblleave', $data);
@@ -73,6 +99,42 @@ class Leave_model extends CI_Model
 
         return $data;
     }
+
+    public function get_n1($userId)
+    {
+        $this->db->select('leave_type_id,n1');
+        $this->db->from('employee_leave_types');
+        $this->db->where('emp_id', $userId);
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        $data = [];
+        foreach ($result as $row) {
+            $data[$row['leave_type_id']] = $row['n1'];
+        }
+
+        return $data;
+    }
+
+    public function get_n2($userId)
+    {
+        $this->db->select('leave_type_id, n2');
+        $this->db->from('employee_leave_types');
+        $this->db->where('emp_id', $userId);
+        $query = $this->db->get();
+
+        $result = $query->result_array();
+
+        $data = [];
+        foreach ($result as $row) {
+            $data[$row['leave_type_id']] = $row['n2'];
+        }
+
+        return $data;
+    }
+
+
 
     public function get_assign_days()
     {
@@ -310,6 +372,7 @@ class Leave_model extends CI_Model
             $this->db->or_like('e.last_name', $search);
             $this->db->or_like('e.designation', $search);
             $this->db->or_like('lt.leave_type', $search);
+            $this->db->or_like('l.remarks_admin', $search);
             $this->db->group_end();
         }
 
@@ -343,7 +406,7 @@ class Leave_model extends CI_Model
     //     return $this->db->update('tblleave', ['leave_status' => $status]);
     // }
 
-    public function update_leave_status($id, $status, $letter_number = null, $approveFilePath = null) {
+    public function update_leave_status($id, $status, $letter_number = null, $approveFilePath = null, $remarks_admin = null) {
         $data = [
             'leave_status' => $status
         ];
@@ -355,6 +418,11 @@ class Leave_model extends CI_Model
         if (!empty($approveFilePath)) {
             $data['file'] = $approveFilePath;
         }
+
+        if (!empty($remarks_admin)) {
+            $data['remarks_admin'] = $remarks_admin;
+        }
+
     
         $this->db->where('id', $id);
         return $this->db->update('tblleave', $data);

@@ -40,8 +40,8 @@ class Leave_type extends CI_Controller
             'description' => $this->input->post('description'),
             'assign_days' => $this->input->post('assigned'),
             'status' => $this->input->post('status'),
-            'allowsat' => $this->input->post('allowsat'),
-            'allowsun' => $this->input->post('allowsun'),
+            'leave_allowsat' => $this->input->post('leave_allowsat'),
+            'leave_allowsun' => $this->input->post('leave_allowsun'),
             'creation_date' => date('Y-m-d H:i:s')
         ];
         // print_r($data);exit;
@@ -61,8 +61,8 @@ class Leave_type extends CI_Controller
             'description' => $this->input->post('description'),
             'assign_days' => $this->input->post('assigned'),
             'status' => $this->input->post('status'),
-            'allowsat' => $this->input->post('allowsat'),
-            'allowsun' => $this->input->post('allowsun'),
+            'leave_allowsat' => $this->input->post('leave_allowsat'),
+            'leave_allowsun' => $this->input->post('leave_allowsun'),
         ];
 
         // print_r($data);exit;

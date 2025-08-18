@@ -33,23 +33,28 @@
                                     <i class="icofont icofont-home"></i> <?php echo $selected_leave_status_name; ?>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="bystatus">
-                                    <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Show all') ? 'active' : ''; ?>"
-                                        href="?leave_status=Show all">Show all</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Admin Approval') ? 'active' : ''; ?>"
-                                        href="?leave_status=0">Pending Admin Approval</a>
-                                    <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Admin') ? 'active' : ''; ?>"
-                                        href="?leave_status=1">Rejected by Admin</a>
+                                    <?php if ($this->session->userdata('role') != 'Kepala'): ?>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Show all') ? 'active' : ''; ?>"
+                                            href="?leave_status=Show all">Show all</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Admin Approval') ? 'active' : ''; ?>"
+                                            href="?leave_status=0">Pending Admin Approval</a>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Admin') ? 'active' : ''; ?>"
+                                            href="?leave_status=1">Rejected by Admin</a>
+                                    <?php endif; ?>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Forwarded to Kepala') ? 'active' : ''; ?>"
                                         href="?leave_status=2">Forwarded to Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Kepala') ? 'active' : ''; ?>"
                                         href="?leave_status=3">Rejected by Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Approved') ? 'active' : ''; ?>"
                                         href="?leave_status=4">Approved</a>
-                                    <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Cancelled') ? 'active' : ''; ?>"
-                                        href="?leave_status=5">Cancelled</a>
-                                    <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Recalled') ? 'active' : ''; ?>"
-                                        href="?leave_status=6">Recalled</a>
+
+                                    <?php if ($this->session->userdata('role') != 'Kepala'): ?>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Cancelled') ? 'active' : ''; ?>"
+                                            href="?leave_status=5">Cancelled</a>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Recalled') ? 'active' : ''; ?>"
+                                            href="?leave_status=6">Recalled</a>
+                                    <?php endif; ?>
                                 </div>
                             </li>
                         </ul>
@@ -184,20 +189,26 @@
                                         </div>
                                         <label class="m-l-0 p-l-0" style="margin-left:-14px"
                                             for="st"><strong>Status</strong></label>
-                                        <div class="row" id="radioButtonsContainer">
+                                        <div class="row mb-3" id="radioButtonsContainer">
 
                                             <!-- options will be dynamically inserted here -->
                                         </div>
-
-
-                                    </div>
-
-                                    <div class="row m-t-15">
-                                        <div class="col-md-12">
-                                            <button type="button"
-                                                class="btn btn-primary btn-md btn-block waves-effect text-center">Update</button>
+                                        <!-- New input for Letter Number -->
+                                        <div class="row  mt-0" id="remarksInfoAdmin">
+                                            <label for="remarks_admin"><strong>Alasan (opsional) : </strong></label>
+                                            <textarea id="remarks_admin" name="remarks_admin"
+                                                class="form-control"></textarea>
                                         </div>
+
                                     </div>
+                                    <?php if ($this->session->userdata('role') == 'Admin' || $this->session->userdata('role') == 'Kepala'): ?>
+                                        <div class="row m-t-15">
+                                            <div class="col-md-12">
+                                                <button type="button"
+                                                    class="btn btn-primary btn-md btn-block waves-effect text-center">Update</button>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p class="text-inverse text-left m-b-0 m-t-10"></p>
@@ -351,7 +362,6 @@
 </script>
 
 <!-- FETCH -->
-<!-- ada beberapa bug di fetch data maslah disable input saat status diubah -->
 <script type="text/javascript">
     $(document).ready(function () {
         // Retrieve the initial department filter value
@@ -435,21 +445,17 @@
     $(document).ready(function () {
         // Function to format dates as "6th May, 2024"
         function formatDate(date) {
-            var day = date.getDate();
-            var month = date.toLocaleString('default', { month: 'long' });
-            var year = date.getFullYear();
+            const day = date.getDate();
 
-            // Determine the ordinal suffix
-            var suffix = 'th';
-            if (day % 10 === 1 && day !== 11) {
-                suffix = 'st';
-            } else if (day % 10 === 2 && day !== 12) {
-                suffix = 'nd';
-            } else if (day % 10 === 3 && day !== 13) {
-                suffix = 'rd';
-            }
+            // Nama bulan dalam bahasa Indonesia
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
 
-            return day + suffix + ' ' + month + ', ' + year;
+            return day + ' ' + month + ' ' + year;
         }
 
         // Handle the click event for the "Review" link
@@ -458,8 +464,9 @@
             var letterNumber = $(this).data('letter-number');
             var approvalFile = $(this).data('approval-file');
             var sickFile = $(this).data('sick-file');
+            var remarksAdmin = $(this).data('remarks-admin');
 
-            // console.log('sick file : ' + sickFile);
+            console.log('sick file : ' + sickFile);
             if (approvalFile) {
                 let fileUrl = "<?= base_url() ?>" + approvalFile;
                 $('#approvalFileInfo').show();
@@ -489,6 +496,8 @@
                 $('#letterNumber').val(''); // kosongkan kalau null
             }
 
+            $('#remarks_admin').val(remarksAdmin);
+
 
             // Get the data attributes from the clicked link
             var leaveType = $(this).data('leave-type');
@@ -506,6 +515,8 @@
             $middle = $this->session->userdata('middle_name') ?? '';
             $last = $this->session->userdata('last_name') ?? '';
             echo trim($first . ' ' . $middle . ' ' . $last);
+
+
             ?>';
 
             // Map leave status strings to numeric values
@@ -545,8 +556,6 @@
             var formattedStartDate = formatDate(startDate);
             var formattedEndDate = formatDate(endDate);
 
-
-
             switch (leaveStatus) {
                 case "Pending Admin Approval":
                     $('#modalLeaveStatus').addClass('text-primary');
@@ -580,7 +589,7 @@
                     if (today > endDate) {
                         modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> on <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> is pending, but the requested leave period has already passed. It is too late to approve or reject this request.";
                     } else {
-                        modalMessage = "Anda akan meninjau permohonan cuti yang masih menunggu persetujuan yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> for the period from <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b>. Mohon periksa rincian dengan teliti dan tentukan apakah permintaan tersebut disetujui atau ditolak.";
+                        modalMessage = "Anda akan meninjau permohonan cuti yang masih menunggu persetujuan yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b>. Mohon periksa rincian dengan teliti dan tentukan apakah permintaan tersebut disetujui atau ditolak.";
                     }
                     break;
                 case 1: // Rejected by Admin

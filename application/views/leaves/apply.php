@@ -364,6 +364,18 @@ $(document).ready(function () {
         const selectedOption = $(this).find('option:selected');
         allowSat = selectedOption.data('allowsat') == 1;
         allowSun = selectedOption.data('allowsun') == 1;
+
+        allowsatleave = selectedOption.data('allowsatleave') == 1;
+        allowsunleave = selectedOption.data('allowsunleave') == 1;
+
+        // Override kalau leave type punya aturan sendiri
+        if (selectedOption.data('allowsatleave') !== undefined) {
+            allowSat = allowsatleave;
+        }
+        if (selectedOption.data('allowsunleave') !== undefined) {
+            allowSun = allowsunleave;
+        }
+     
         availableDays = parseInt(selectedOption.data('available_days')) || 0; // simpan ke variabel global
 
 

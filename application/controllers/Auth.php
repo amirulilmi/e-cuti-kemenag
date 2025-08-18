@@ -48,6 +48,7 @@ class Auth extends CI_Controller
                 'name' => $user->first_name . ' ' . $user->last_name,
                 'role' => $user->role,
                 'department' => $user->department,
+                'department_id' => $user->department,
                 'logged_in' => TRUE,
                 'image' => $user->image_path,
                 'first_name' => $user->first_name,

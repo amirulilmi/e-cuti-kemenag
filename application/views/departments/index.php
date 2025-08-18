@@ -38,7 +38,9 @@
                                                 Staff</a>
                                             <a class="dropdown-item edit-btn" href="#" data-id="<?= $department['id'] ?>"
                                                 data-name="<?= $department['department_name'] ?>"
-                                                data-description="<?= $department['department_desc'] ?>">Edit</a>
+                                                data-description="<?= $department['department_desc'] ?>"
+                                                data-dept_allowsat="<?= $department['dept_allowsat'] ?>"
+                                                data-dept_allowsun="<?= $department['dept_allowsun'] ?>">Edit</a>
                                             <a class="dropdown-item delete-btn" href="#"
                                                 data-id="<?= $department['id'] ?>">Delete</a>
                                         </div>
@@ -114,6 +116,46 @@
                         <label>Deskripsi Unit Kerja</label>
                         <textarea name="department_desc" class="form-control" required></textarea>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label>Perbolehkan Cuti Hari Sabtu</label> <!-- Label tambahan -->
+                            <div class="form-radio">
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsat" name="dept_allowsat" value="1">
+                                        <i class="helper"></i>Ya
+                                    </label>
+                                </div>
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsat" name="dept_allowsat" value="0">
+                                        <i class="helper"></i>Tidak
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label>Perbolehkan Cuti Hari Minggu</label> <!-- Label tambahan -->
+                            <div class="form-radio">
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsun" name="dept_allowsun" value="1">
+                                        <i class="helper"></i>Ya
+                                    </label>
+                                </div>
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsun" name="dept_allowsun" value="0">
+                                        <i class="helper"></i>Tidak
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -145,6 +187,50 @@
                         <label>Deskripsi Unit Kerja</label>
                         <textarea name="department_desc" id="edit-description" class="form-control" required></textarea>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label>Perbolehkan Cuti Hari Sabtu</label> <!-- Label tambahan -->
+                            <div class="form-radio">
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsat" name="dept_allowsat" id="dept_allowsat"
+                                            value="1">
+                                        <i class="helper"></i>Ya
+                                    </label>
+                                </div>
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsat" name="dept_allowsat" id="dept_allowsat"
+                                            value="0">
+                                        <i class="helper"></i>Tidak
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label>Perbolehkan Cuti Hari Minggu</label> <!-- Label tambahan -->
+                            <div class="form-radio">
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsun" name="dept_allowsun" id="dept_allowsun"
+                                            value="1">
+                                        <i class="helper"></i>Ya
+                                    </label>
+                                </div>
+                                <div class="radio radiofill radio-inline">
+                                    <label>
+                                        <input type="radio" class="allowsun" name="dept_allowsun" id="dept_allowsun"
+                                            value="0">
+                                        <i class="helper"></i>Tidak
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -161,12 +247,26 @@
         // Save
         $('#addForm').on('submit', function (e) {
             e.preventDefault();
+
             $.post("<?= site_url('department/save') ?>", $(this).serialize(), function (res) {
                 var data = JSON.parse(res);
                 if (data.status === 'success') {
-                    location.reload();
+                    $('#addModal').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Unit Kerja berhasil ditambahkan.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert(data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message
+                    });
                 }
             });
         });
@@ -176,6 +276,11 @@
             $('#edit-id').val($(this).data('id'));
             $('#edit-name').val($(this).data('name'));
             $('#edit-description').val($(this).data('description'));
+            // untuk radio allowsat
+            $("input[name='dept_allowsat'][value='" + $(this).data('dept_allowsat') + "']").prop("checked", true);
+
+            // untuk radio allowsun
+            $("input[name='dept_allowsun'][value='" + $(this).data('dept_allowsun') + "']").prop("checked", true);
             $('#editModal').modal('show');
         });
 
@@ -185,9 +290,22 @@
             $.post("<?= site_url('department/update') ?>", $(this).serialize(), function (res) {
                 var data = JSON.parse(res);
                 if (data.status === 'success') {
-                    location.reload();
+                    $('#editModal').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Unit Kerja berhasil diperbarui.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert(data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message
+                    });
                 }
             });
         });

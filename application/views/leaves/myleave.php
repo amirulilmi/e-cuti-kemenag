@@ -36,13 +36,25 @@
                                 <div class="col-xl-4 col-md-12">
                                     <div class="card statustic-card">
                                         <div class="card-header">
-                                            <h5><?= htmlspecialchars($summary['type']) ?></h5>
+                                            <h5 class="mb-0 d-flex align-items-center font-weight-bold" style="font-size:60px !important;">
+                                                <span style="font-size:20px !important;color:#303548"><?= htmlspecialchars($summary['type']) ?></span>
+                                                <span class="text-primary f-30 ml-2">
+                                                    <?= ': ' .$summary['total_awal']. ' (n) ' ?>
+                                                </span>
+                                                <span class="text-warning f-30 ml-2">
+                                                    <?= ' + ' . $summary['n1']. ' (n1) ' ?>
+                                                </span>
+                                                <span class="text-success f-30 ml-2">
+                                                    <?= ' + ' . $summary['n2']. ' (n2) ' ?>
+                                                </span>
+                                            </h5>
                                         </div>
                                         <div class="card-block text-center">
                                             <div class="row">
                                                 <div class="col">
                                                     <span class="d-block text-c-blue f-30"
                                                         style="font-weight: bold;"><?= $summary['total'] ?></span>
+
                                                     <p class="m-b-0 text-c-blue">Total</p>
                                                 </div>
                                                 <div class="col">
@@ -351,21 +363,17 @@
     $(document).ready(function () {
         // Function to format dates as "6th May, 2024"
         function formatDate(date) {
-            var day = date.getDate();
-            var month = date.toLocaleString('default', { month: 'long' });
-            var year = date.getFullYear();
+            const day = date.getDate();
 
-            // Determine the ordinal suffix
-            var suffix = 'th';
-            if (day % 10 === 1 && day !== 11) {
-                suffix = 'st';
-            } else if (day % 10 === 2 && day !== 12) {
-                suffix = 'nd';
-            } else if (day % 10 === 3 && day !== 13) {
-                suffix = 'rd';
-            }
+            // Nama bulan dalam bahasa Indonesia
+            const months = [
+                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            ];
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
 
-            return day + suffix + ' ' + month + ', ' + year;
+            return day + ' ' + month + ' ' + year;
         }
 
         // Handle the click event for the "Review" link

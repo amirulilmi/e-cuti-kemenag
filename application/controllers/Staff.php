@@ -32,7 +32,7 @@ class Staff extends CI_Controller
             $departmentName = urldecode($this->input->get('department'));
         }
 
-       
+
         $data['departmentFilter'] = $departmentName ?: 'Show all';
         $data['departments'] = $this->Staff_model->get_departments();
 
@@ -191,23 +191,23 @@ class Staff extends CI_Controller
         if (empty($id)) {
             // Insert -> staff_id & email harus unik
             $this->form_validation->set_rules(
-                'staff_id', 
-                'Staff ID', 
-                'required|is_unique[tblemployees.staff_id]', 
+                'staff_id',
+                'Staff ID',
+                'required|is_unique[tblemployees.staff_id]',
                 [
-                    'required'   => 'NIP wajib diisi.',
-                    'is_unique'  => 'NIP sudah digunakan. Silakan pilih yang lain.'
+                    'required' => 'NIP wajib diisi.',
+                    'is_unique' => 'NIP sudah digunakan. Silakan pilih yang lain.'
                 ]
             );
-            
+
             $this->form_validation->set_rules(
-                'email', 
-                'Email', 
-                'required|valid_email|is_unique[tblemployees.email_id]', 
+                'email',
+                'Email',
+                'required|valid_email|is_unique[tblemployees.email_id]',
                 [
-                    'required'   => 'Email wajib diisi.',
-                    'valid_email'=> 'Format email tidak valid.',
-                    'is_unique'  => 'Email sudah digunakan. Silakan gunakan email lain.'
+                    'required' => 'Email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.',
+                    'is_unique' => 'Email sudah digunakan. Silakan gunakan email lain.'
                 ]
             );
         } else {
@@ -272,6 +272,108 @@ class Staff extends CI_Controller
 
         echo json_encode($response);
     }
+
+    public function add_n_employee()
+    {
+        $leave_type_id = $this->input->post('leave_type_id');
+        $employee_id = $this->input->post('employee_id');
+        $n1 = (int) $this->input->post('n1');
+        $n2 = (int) $this->input->post('n2');
+
+        if (!$leave_type_id || !$employee_id) {
+            echo json_encode(["status" => "error", "message" => "Data tidak lengkap."]);
+            return;
+        }
+
+        $record = $this->db->get_where('employee_leave_types', [
+            'emp_id' => $employee_id,
+            'leave_type_id' => $leave_type_id
+        ])->row();
+
+        if ($record) {
+            // Validasi jika n1 atau n2 sudah ada
+            // Validasi n1 sendiri
+            if (!empty($n1) && $record->n1 !== null) {
+                echo json_encode([
+                    "status" => "warning",
+                    "message" => "Kolom N1 sudah ada. Hapus dulu sebelum menambahkan yang baru."
+                ]);
+                return;
+            }
+
+            // Validasi n2 sendiri
+            if (!empty($n2) && $record->n2 !== null) {
+                echo json_encode([
+                    "status" => "warning",
+                    "message" => "Kolom N2 sudah ada. Hapus dulu sebelum menambahkan yang baru."
+                ]);
+                return;
+            }
+
+            // Update kolom yang diisi saja
+            if (!empty($n1)) {
+                $this->db->set('n1', (int)$n1);
+                $this->db->set('available_days', 'available_days + ' . (int)$n1, FALSE);
+            }
+            if (!empty($n2)) {
+                $this->db->set('n2', (int)$n2);
+                $this->db->set('available_days', 'available_days + ' . (int)$n2, FALSE);
+            }
+            // Update kolom yang diisi saja
+            $this->db->where('emp_id', $employee_id);
+            $this->db->where('leave_type_id', $leave_type_id);
+            $this->db->update('employee_leave_types');
+
+            echo json_encode(["status" => "success", "message" => "Data berhasil diupdate!"]);
+        } else {
+            // Insert baru
+            $data = [
+                'emp_id'        => $employee_id,
+                'leave_type_id' => $leave_type_id,
+                'n1'            => !empty($n1) ? (int)$n1 : null,
+                'n2'            => !empty($n2) ? (int)$n2 : null,
+                'available_days'=> ((int)$n1 + (int)$n2)
+            ];
+            $this->db->insert('employee_leave_types', $data);
+
+            echo json_encode(["status" => "success", "message" => "Data berhasil ditambahkan!"]);
+        }
+    }
+
+    public function delete_n()
+    {
+        $leave_type_id = $this->input->post('leave_type_id');
+        $emp_id = $this->input->post('emp_id');
+        $column = $this->input->post('column'); // n1 atau n2
+
+        if (!$leave_type_id || !$emp_id || !in_array($column, ['n1', 'n2'])) {
+            echo json_encode(["status" => "error", "message" => "Data tidak valid."]);
+            return;
+        }
+
+        // Ambil data existing
+        $record = $this->db->get_where('employee_leave_types', [
+            'emp_id' => $emp_id,
+            'leave_type_id' => $leave_type_id
+        ])->row();
+
+        if (!$record) {
+            echo json_encode(["status" => "error", "message" => "Data tidak ditemukan."]);
+            return;
+        }
+
+        $valueToSubtract = (int) $record->$column;
+
+        // Set kolom n1/n2 menjadi NULL dan update available_days
+        $this->db->set($column, null);
+        $this->db->set('available_days', 'available_days - ' . $valueToSubtract, FALSE);
+        $this->db->where('emp_id', $emp_id);
+        $this->db->where('leave_type_id', $leave_type_id);
+        $this->db->update('employee_leave_types');
+
+        echo json_encode(["status" => "success", "message" => $column . " berhasil dihapus!"]);
+    }
+
 
     // Callback unik staff_id saat update
     public function check_staff_id($staff_id, $id)
@@ -446,7 +548,7 @@ class Staff extends CI_Controller
 
 
 
-        // print_r($data['employee']);exit;
+        // print_r($assigned_leave_types);exit;
 
         $data['page_name'] = 'staff';
         // Load header and sidebar

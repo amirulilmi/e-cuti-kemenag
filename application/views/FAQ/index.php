@@ -17,9 +17,11 @@
 
         <!-- Tambah Button -->
         <div class="text-right m-b-20">
+        <?php if ($this->session->userdata('role') == 'Admin'): ?>
             <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">
                 <i class="icofont icofont-plus m-r-5"></i> Tambah Template Surat Pengajuan
             </button>
+        <?php endif; ?>
         </div>
 
         <div class="page-body">
@@ -39,7 +41,9 @@
                                             <th>Nama Template</th>
                                             <th>Deskripsi</th>
                                             <th>Dokumen</th>
+                                            <?php if ($this->session->userdata('role') == 'Admin'): ?>
                                             <th>Aksi</th>
+                                            <?php endif; ?>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,6 +64,7 @@
                                                             <span class="text-muted">Belum ada file</span>
                                                         <?php endif; ?>
                                                     </td>
+                                                    <?php if ($this->session->userdata('role') == 'Admin'): ?>
                                                     <td>
                                                         <button data-id="<?= $faq->id ?>"
                                                             data-name="<?= htmlspecialchars($faq->name) ?>"
@@ -74,6 +79,7 @@
                                                             <i class="icofont icofont-ui-delete"></i>Delete
                                                         </button>
                                                     </td>
+                                                    <?php endif; ?>
                                                 </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>

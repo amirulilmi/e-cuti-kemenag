@@ -18,7 +18,7 @@ class Leave extends CI_Controller
 
         // custom calender
         $holidays = $this->Calender_model->get_all();
-    
+
         $data['holiday_dates'] = array_column($holidays, 'holiday_date');
 
 
@@ -313,15 +313,18 @@ class Leave extends CI_Controller
     }
     public function loadLeaveTypes()
     {
+
         $empId = $this->input->post('empId');
         $leave_types = $this->Leave_model->getLeaveTypesByEmployee($empId); // buat fungsi di model
-
+        // print_r($leave_types);exit;
         // print_r($leave_types);exit;
         $options = '<option value="">-- Pilih Tipe Cuti --</option>';
         foreach ($leave_types as $type) {
             $options .= '<option value="' . $type['id'] . '" 
-                            data-allowsat="' . $type['allowsat'] . '" 
-                            data-allowsun="' . $type['allowsun'] . '"
+                            data-allowsat="' . $type['dept_allowsat'] . '" 
+                            data-allowsun="' . $type['dept_allowsun'] . '"
+                            data-allowsatleave="' . $type['leave_allowsat'] . '"
+                            data-allowsunleave="' . $type['leave_allowsun'] . '"
                             data-available_days="' . $type['available_days'] . '"
                             >'
                 . htmlspecialchars($type['leave_type']) .
@@ -344,18 +347,32 @@ class Leave extends CI_Controller
         $availableDays = $this->Leave_model->get_available_days($userId);
         $assignDays = $this->Leave_model->get_assign_days();
 
+        $n1Days = $this->Leave_model->get_n1($userId);
+        $n2Days = $this->Leave_model->get_n2($userId);
+       
 
-        // print_r($assignDays);exit;
+        // print_r($availableDays);exit;
         // kalkulasi summary
         $leaveSummary = [];
         foreach ($leaveData as $leave) {
             $leaveTypeId = $leave['leave_type_id'];
             $requestedDays = $leave['requested_days'];
 
+            // ambil assign_days
+            $assign = $assignDays[$leaveTypeId] ?? 0;
+           
+            // ambil n1 + n2 
+            $n1 = $n1Days[$leaveTypeId] ?? 0;
+            $n2 = $n2Days[$leaveTypeId] ?? 0;
+
+            // print_r($additional);exit;
             if (!isset($leaveSummary[$leaveTypeId])) {
                 $leaveSummary[$leaveTypeId] = [
                     'type' => $leave['leave_type'],
-                    'total' => $assignDays[$leaveTypeId] ?? 0,
+                    'total_awal' => $assignDays[$leaveTypeId] ?? 0,
+                    'n1' => $n1,
+                    'n2' => $n2,
+                    'total' => $assign + $n1 + $n2,     // assign_days + n1 + n2
                     'remaining' => $availableDays[$leaveTypeId] ?? 0,
                     'used' => 0
                 ];
@@ -492,10 +509,21 @@ class Leave extends CI_Controller
 
             $leaveTypeName = isset($leaveTypes[$leave->leave_type_id]) ? $leaveTypes[$leave->leave_type_id] : 'Unknown';
 
-            $fromDate = date('jS F, Y', strtotime($leave->from_date));
-            $toDate = date('jS F, Y', strtotime($leave->to_date));
-            $postingDate = date('jS F, Y', strtotime($leave->created_date));
+            // $fromDate = date('jS F, Y', strtotime($leave->from_date));
+            // $toDate = date('jS F, Y', strtotime($leave->to_date));
+            // $postingDate = date('jS F, Y', strtotime($leave->created_date));
+            $formatter = new IntlDateFormatter(
+                'id_ID',
+                IntlDateFormatter::LONG,
+                IntlDateFormatter::NONE,
+                'Asia/Jakarta',
+                IntlDateFormatter::GREGORIAN
+            );
 
+            $postingDate = $formatter->format(new DateTime($leave->created_date));
+
+            $toDate = $formatter->format(new DateTime($leave->to_date));
+            $fromDate = $formatter->format(new DateTime($leave->from_date));
             echo '
             <div class="col-md-15">
                 <div class="card">
@@ -549,15 +577,15 @@ class Leave extends CI_Controller
                                         <span class="point-marker bg-danger"></span>Review
                                    </a>';
 
-                                    // kalau status = 0 tampilkan tombol edit
-                                    if ($leave->leave_status == 0) {
-                                        echo '<a class="dropdown-item waves-light waves-effect" 
+            // kalau status = 0 tampilkan tombol edit
+            if ($leave->leave_status == 0) {
+                echo '<a class="dropdown-item waves-light waves-effect" 
                                                                     href="' . base_url('Leave/apply?id=' . $leave->id . '&edit=1') . '">
                                                                     <span class="point-marker bg-danger"></span>Edit Request
                                                                     </a>';
-                                    }
+            }
 
-                                    echo '  
+            echo '  
                                 </div>
                             </div>
                         </div>
@@ -576,7 +604,7 @@ class Leave extends CI_Controller
         // $leave_status_filter = $this->input->get('leave_status') ? $this->input->get('leave_status') : 'Show all';
         $leave_status_filter = $this->input->get('leave_status');
         $leave_status_filter = ($leave_status_filter !== null) ? $leave_status_filter : 'Show all';
-
+        
         // Get selected leave status name
         $selected_leave_status_name = 'Show all';
         if ($leave_status_filter !== 'Show all') {
@@ -642,8 +670,7 @@ class Leave extends CI_Controller
 
         $search_query = $this->input->post('searchQuery');
         $leave_status_filter = $this->input->post('leaveStatusFilter');
-
-
+        
         $filters = [
             'user_role' => $this->session->userdata('role'),
             'user_id' => $this->session->userdata('emp_id'),
@@ -698,8 +725,20 @@ class Leave extends CI_Controller
 
             $from_date = date('jS F, Y', strtotime($leave['from_date']));
             $to_date = date('jS F, Y', strtotime($leave['to_date']));
-            $posting_date = date('jS F, Y', strtotime($leave['created_date']));
+            // $posting_date = date('jS F, Y', strtotime($leave['created_date']));
+            
+            $formatter = new IntlDateFormatter(
+                'id_ID',
+                IntlDateFormatter::LONG,
+                IntlDateFormatter::NONE,
+                'Asia/Jakarta',
+                IntlDateFormatter::GREGORIAN
+            );
 
+            $posting_date = $formatter->format(new DateTime($leave['created_date']));
+
+            $to_date = $formatter->format(new DateTime($leave['to_date']));
+            $from_date = $formatter->format(new DateTime($leave['from_date']));
             $full_name = trim($leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name']);
 
             $html .= '<div class="col-md-15">
@@ -712,7 +751,8 @@ class Leave extends CI_Controller
                         <div class="media-body media-middle">
                             <div class="company-name">
                                 <p>' . $leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name'] . '</p>
-                                <span class="text-muted f-14">Created on ' . $posting_date . '</span>
+                                <span class="text-muted f-14">Dibuat pada ' . $posting_date . '</span>
+                                <span class="text-success fw-bolder f-14">No Surat: ' .$leave['remarks_admin'] . '</span>
                             </div>
                             <div class="job-badge">
                                 <label class="label ' . $badge_class . '">' . $leave_status_text . '</label>
@@ -722,7 +762,7 @@ class Leave extends CI_Controller
                 </div>
                 <div class="card-block" >
                     <h6 class="job-card-desc">Tipe Cuti: ' . $leave_type_name . '</h6>
-                    <p class="text-muted">Pengajuan cuti ini berlaku untuk periode dari: <strong>' . $from_date . '</strong> sampai: <strong>' . $to_date . '</strong></p>
+                    <p class="text-muted">Pengajuan cuti ini berlaku untuk periode dari: <strong>' . $from_date . '</strong> sampai <strong>' . $to_date . '</strong></p>
                     <div class="job-meta-data"><i class="icofont icofont-safety"></i>Jumlah Hari Cuti diajukan: ' . $leave['requested_days'] . '</div>
                     <div class="job-meta-data"><i class="icofont icofont-university"></i>SIsa Jatah Cuti: ' . $leave['available_days'] . '</div>
                     <div class="text-right">
@@ -737,7 +777,7 @@ class Leave extends CI_Controller
                                 data-target="#confirm-mail" 
                                 data-submission-date="' . $leave['created_date'] . '" 
                                 data-expiry-date="' . $leave['to_date'] . '" 
-                                data-start-date="' . $leave['from_date'] . '" 
+                                data-start-date="' . $leave['from_date']. '" 
                                 data-leave-reason="' . $leave['remarks'] . '" 
                                 data-leave-remaining="' . $leave['available_days'] . '" 
                                 data-leave-staff="' . $leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name'] . '" 
@@ -748,6 +788,7 @@ class Leave extends CI_Controller
                                 data-letter-number="' . $leave['letter_number'] . '" 
                                 data-approval-file="' . $leave['file'] . '"
                                 data-sick-file="' . $leave['sick_file'] . '"
+                                data-remarks-admin="' .$leave['remarks_admin']. '"
                                 >
                                 Review
                             </button>
@@ -778,7 +819,8 @@ class Leave extends CI_Controller
         $letter_number = $this->input->post('letterNumber');
         // Get leave details before update
         $leave_data = $this->Leave_model->get_leave_by_id($id);
-
+        $remarks_admin = $this->input->post('remarks_admin');
+        // print_r($remarks_admin);exit;
 
         // Cek apakah ada file yang diupload
         $approveFilePath = null;
@@ -842,7 +884,7 @@ class Leave extends CI_Controller
         }
 
         // Update leave status
-        if ($this->Leave_model->update_leave_status($id, $status, $letter_number, $approveFilePath)) {
+        if ($this->Leave_model->update_leave_status($id, $status, $letter_number, $approveFilePath, $remarks_admin)) {
             // Send notifications for approved or recalled leaves
             if ($status == 4 || $status == 6) {
                 $this->send_leave_status_notification($emp_id, $leave_type_id, $from_date, $to_date, $status);
