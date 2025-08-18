@@ -67,8 +67,7 @@
                                 ?>
                                 <div class="row col-lg-12 mx-0 my-1">
                                     <div class="col-4 px-1">
-                                        <a href="<?= site_url('Rank/') ?>"
-                                            class="btn btn-sm w-100"
+                                        <a href="<?= site_url('Rank/') ?>" class="btn btn-sm w-100"
                                             style="background-color: #e0f3ff; color: #0d6efd; border: 1px solid #b3e0ff;">
                                             <i class="feather icon-eye"></i> View
                                         </a>
@@ -103,10 +102,12 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form id="addForm">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content" style="border:none">
+                <div class="modal-header"
+                    style="background-color: #01a9ac; color: #fff; border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                     <h5 class="modal-title">Tambah Kategori</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="color: #fff; opacity: 1;">
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -132,10 +133,12 @@
     <div class="modal-dialog" role="document">
         <form id="editForm">
             <input type="hidden" name="id" id="edit-id">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content" style="border:none">
+                <div class="modal-header"
+                    style="background-color: #01a9ac; color: #fff; border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                     <h5 class="modal-title">Edit Kategori</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="color: #fff; opacity: 1;">
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

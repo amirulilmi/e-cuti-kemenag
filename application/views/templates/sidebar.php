@@ -3,7 +3,7 @@
 
         <nav class="pcoded-navbar">
             <div class="pcoded-inner-navbar main-menu">
-                <?php if ($this->session->userdata('role') == 'Manager' || $this->session->userdata('role') == 'Admin'): ?>
+                <?php if ($this->session->userdata('role') == 'Admin'): ?>
                     <div class="pcoded-navigatio-lavel">Navigasi</div>
                     <ul class="pcoded-item pcoded-left-item">
                         <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
@@ -53,25 +53,32 @@
                         <li
                             class="pcoded-hasmenu <?php echo ($page_name == 'leave' || $page_name == 'apply_leave' || $page_name == 'leave_request' || $page_name == 'my_leave') ? 'active pcoded-trigger' : ''; ?>">
 
-                        <li class="<?php echo ($page_name == 'apply_leave') ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('Leave/apply') ?>">
-                                <span class="pcoded-micon"><i class="feather icon-edit"></i></span>
-                                <span class="pcoded-mtext">Ajukan Cuti</span>
-                            </a>
-                        </li>
+                            <li class="<?php echo ($page_name == 'apply_leave') ? 'active' : ''; ?>">
+                                <a href="<?php echo base_url('Leave/apply') ?>">
+                                    <span class="pcoded-micon"><i class="feather icon-edit"></i></span>
+                                    <span class="pcoded-mtext">Ajukan Cuti</span>
+                                </a>
+                            </li>
 
-                        <li class="<?php echo ($page_name == 'my_leave') ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('Leave/myLeave') ?>">
-                                <span class="pcoded-micon"><i class="feather icon-user"></i></span>
-                                <span class="pcoded-mtext">Cuti Saya</span>
-                            </a>
-                        </li>
-                        <li class="<?php echo ($page_name == 'all_leave') ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('Leave/all_leaves') ?>">
-                                <span class="pcoded-micon"><i class="feather  icon-file-text"></i></span>
-                                <span class="pcoded-mtext">Semua Cuti</span>
-                            </a>
-                        </li>
+                            <li class="<?php echo ($page_name == 'my_leave') ? 'active' : ''; ?>">
+                                <a href="<?php echo base_url('Leave/myLeave') ?>">
+                                    <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                                    <span class="pcoded-mtext">Cuti Saya</span>
+                                </a>
+                            </li>
+                            <li class="<?php echo ($page_name == 'all_leave') ? 'active' : ''; ?>">
+                                <a href="<?php echo base_url('Leave/all_leaves') ?>">
+                                    <span class="pcoded-micon"><i class="feather  icon-file-text"></i></span>
+                                    <span class="pcoded-mtext">Semua Cuti</span>
+                                </a>
+                            </li>
+
+                            <li class="<?php echo ($page_name == 'FAQ') ? 'active' : ''; ?>">
+                                <a href="<?php echo base_url('FAQ/index') ?>">
+                                    <span class="pcoded-micon"><i class="feather  icon-folder"></i></span>
+                                    <span class="pcoded-mtext">Template Surat</span>
+                                </a>
+                            </li>
                         </li>
                     </ul>
                 <?php endif; ?>
@@ -110,10 +117,10 @@
 
                     </ul>
                 <?php endif; ?>
-            <!-- AKHIR STAFF -->
+                <!-- AKHIR STAFF -->
 
-            <!-- KEPALA DAN PTSP-->
-            <?php if ($this->session->userdata('role') == 'PTSP' || $this->session->userdata('role') == 'Kepala'): ?>
+                <!-- KEPALA DAN PTSP-->
+                <?php if ($this->session->userdata('role') == 'PTSP' || $this->session->userdata('role') == 'Kepala'): ?>
                     <div class="pcoded-navigatio-lavel">Navigasi</div>
                     <ul class="pcoded-item pcoded-left-item">
                         <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
@@ -124,8 +131,6 @@
                         </li>
                     </ul>
                     <ul class="pcoded-item pcoded-left-item">
-                        
-
                         <div class="pcoded-navigatio-lavel">Application</div>
                         <li
                             class="pcoded-hasmenu <?php echo ($page_name == 'leave' || $page_name == 'apply_leave' || $page_name == 'leave_request' || $page_name == 'my_leave') ? 'active pcoded-trigger' : ''; ?>">
@@ -152,7 +157,7 @@
                         </li>
                     </ul>
                 <?php endif; ?>
-            <!-- AKHIR KEPALA -->
+                <!-- AKHIR KEPALA -->
             </div>
         </nav>
 

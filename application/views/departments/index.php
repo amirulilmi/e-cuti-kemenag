@@ -17,72 +17,77 @@
 
         <!-- Add Department Button -->
         <div class="text-right m-b-20">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="icofont icofont-plus m-r-5"></i> Tambah Unit Kerja</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i
+                    class="icofont icofont-plus m-r-5"></i> Tambah Unit Kerja</button>
         </div>
 
         <div class="page-body">
             <div class="row">
                 <?php foreach ($departments as $department): ?>
-                <div class="col-md-12 col-xl-6">
-                    <div class="card app-design">
-                        <div class="card-block">
-                            <div class="f-right">
-                                <div class="dropdown-secondary dropdown">
-                                    <button class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light"
-                                        type="button" data-toggle="dropdown"><?= $department['department_name'] ?></button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="<?= site_url('staff/') ?>?department=<?= urlencode($department['department_name']) ?>">View Staff</a>
-                                        <a class="dropdown-item edit-btn" href="#"
-                                           data-id="<?= $department['id'] ?>"
-                                           data-name="<?= $department['department_name'] ?>"
-                                           data-description="<?= $department['department_desc'] ?>">Edit</a>
-                                        <a class="dropdown-item delete-btn" href="#"
-                                           data-id="<?= $department['id'] ?>">Delete</a>
+                    <div class="col-md-12 col-xl-6">
+                        <div class="card app-design">
+                            <div class="card-block">
+                                <div class="f-right">
+                                    <div class="dropdown-secondary dropdown">
+                                        <button class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light"
+                                            type="button"
+                                            data-toggle="dropdown"><?= $department['department_name'] ?></button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                                href="<?= site_url('staff/') ?>?department=<?= urlencode($department['department_name']) ?>">View
+                                                Staff</a>
+                                            <a class="dropdown-item edit-btn" href="#" data-id="<?= $department['id'] ?>"
+                                                data-name="<?= $department['department_name'] ?>"
+                                                data-description="<?= $department['department_desc'] ?>">Edit</a>
+                                            <a class="dropdown-item delete-btn" href="#"
+                                                data-id="<?= $department['id'] ?>">Delete</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <h6 class="f-w-400 text-muted"><?= $department['department_desc'] ?></h6>
-                            <p class="text-c-blue f-w-400"><?= date('jS F, Y', strtotime($department['creation_date'])) ?></p>
-
-                            <div class="design-description d-inline-block m-r-40">
-                                <h3 class="f-w-400"><?= $department['employee_count'] ?: 'No' ?></h3>
-                                <p class="text-muted">Total Staff</p>
-                            </div>
-                            <div class="design-description d-inline-block">
-                                <h3 class="f-w-400"><?= $department['manager_count'] ?: 'No' ?></h3>
-                                <p class="text-muted">Total Managers</p>
-                            </div>
-
-                            <div class="team-box p-b-20">
-                                <p class="d-inline-block m-r-20 f-w-400">
-                                    <?= $department['employee_count'] > 0 ? 'Team' : 'No Staff' ?>
+                                <h6 class="f-w-400 text-muted"><?= $department['department_desc'] ?></h6>
+                                <p class="text-c-blue f-w-400">
+                                    <?= date('jS F, Y', strtotime($department['creation_date'])) ?>
                                 </p>
-                                <div class="team-section d-inline-block">
-                                    <?php 
-                                    $staffList = $this->Department_model->get_staff_by_department($department['id']);
-                                    foreach ($staffList as $staff):
-                                        $staffImage = base_url($staff['image_path']);
-                                        $staffName = $staff['first_name'].' '.$staff['last_name'];
-                                        echo "<a href='#'><img src='{$staffImage}' title='{$staffName}' class='m-l-5'></a>";
-                                    endforeach;
-                                    ?>
-                                </div>
-                            </div>
 
-                            <?php 
-                            $staffPercentage = $totalStaff > 0 ? round(($department['employee_count'] / $totalStaff) * 100) : 0;
-                            ?>
-                            <div class="progress-box">
-                                <p class="d-inline-block m-r-20 f-w-400">Progress</p>
-                                <div class="progress d-inline-block">
-                                    <div class="progress-bar bg-c-blue" style="width:<?= $staffPercentage ?>%">
-                                        <label><?= $staffPercentage ?>%</label>
+                                <div class="design-description d-inline-block m-r-40">
+                                    <h3 class="f-w-400"><?= $department['employee_count'] ?: 'No' ?></h3>
+                                    <p class="text-muted">Total Staff</p>
+                                </div>
+                                <div class="design-description d-inline-block">
+                                    <h3 class="f-w-400"><?= $department['manager_count'] ?: 'No' ?></h3>
+                                    <p class="text-muted">Total Managers</p>
+                                </div>
+
+                                <div class="team-box p-b-20">
+                                    <p class="d-inline-block m-r-20 f-w-400">
+                                        <?= $department['employee_count'] > 0 ? 'Team' : 'No Staff' ?>
+                                    </p>
+                                    <div class="team-section d-inline-block">
+                                        <?php
+                                        $staffList = $this->Department_model->get_staff_by_department($department['id']);
+                                        foreach ($staffList as $staff):
+                                            $staffImage = base_url($staff['image_path']);
+                                            $staffName = $staff['first_name'] . ' ' . $staff['last_name'];
+                                            echo "<a href='#'><img src='{$staffImage}' title='{$staffName}' class='m-l-5'></a>";
+                                        endforeach;
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <?php
+                                $staffPercentage = $totalStaff > 0 ? round(($department['employee_count'] / $totalStaff) * 100) : 0;
+                                ?>
+                                <div class="progress-box">
+                                    <p class="d-inline-block m-r-20 f-w-400">Progress</p>
+                                    <div class="progress d-inline-block">
+                                        <div class="progress-bar bg-c-blue" style="width:<?= $staffPercentage ?>%">
+                                            <label><?= $staffPercentage ?>%</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -93,10 +98,12 @@
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form id="addForm">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content" style="border:none">
+                <div class="modal-header"
+                    style="background-color: #01a9ac; color: #fff; border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                     <h5 class="modal-title">Tambah Unit Kerja</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="color: #fff; opacity: 1;">
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -122,10 +129,12 @@
     <div class="modal-dialog" role="document">
         <form id="editForm">
             <input type="hidden" name="id" id="edit-id">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content" style="border:none">
+                <div class="modal-header"
+                    style="background-color: #01a9ac; color: #fff; border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                     <h5 class="modal-title">Edit Unit Kerja</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="color: #fff; opacity: 1;">
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -148,53 +157,53 @@
 
 <!-- JS for AJAX CRUD -->
 <script>
-$(function(){
-    // Save
-    $('#addForm').on('submit', function(e){
-        e.preventDefault();
-        $.post("<?= site_url('department/save') ?>", $(this).serialize(), function(res){
-            var data = JSON.parse(res);
-            if(data.status === 'success'){
-                location.reload();
-            } else {
-                alert(data.message);
-            }
-        });
-    });
-
-    // Edit Button
-    $('.edit-btn').on('click', function(){
-        $('#edit-id').val($(this).data('id'));
-        $('#edit-name').val($(this).data('name'));
-        $('#edit-description').val($(this).data('description'));
-        $('#editModal').modal('show');
-    });
-
-    // Update
-    $('#editForm').on('submit', function(e){
-        e.preventDefault();
-        $.post("<?= site_url('department/update') ?>", $(this).serialize(), function(res){
-            var data = JSON.parse(res);
-            if(data.status === 'success'){
-                location.reload();
-            } else {
-                alert(data.message);
-            }
-        });
-    });
-
-    // Delete
-    $('.delete-btn').on('click', function(){
-        if(confirm('Are you sure to delete this department?')){
-            $.post("<?= site_url('department/delete') ?>", {id: $(this).data('id')}, function(res){
+    $(function () {
+        // Save
+        $('#addForm').on('submit', function (e) {
+            e.preventDefault();
+            $.post("<?= site_url('department/save') ?>", $(this).serialize(), function (res) {
                 var data = JSON.parse(res);
-                if(data.status === 'success'){
+                if (data.status === 'success') {
                     location.reload();
                 } else {
                     alert(data.message);
                 }
             });
-        }
+        });
+
+        // Edit Button
+        $('.edit-btn').on('click', function () {
+            $('#edit-id').val($(this).data('id'));
+            $('#edit-name').val($(this).data('name'));
+            $('#edit-description').val($(this).data('description'));
+            $('#editModal').modal('show');
+        });
+
+        // Update
+        $('#editForm').on('submit', function (e) {
+            e.preventDefault();
+            $.post("<?= site_url('department/update') ?>", $(this).serialize(), function (res) {
+                var data = JSON.parse(res);
+                if (data.status === 'success') {
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
+
+        // Delete
+        $('.delete-btn').on('click', function () {
+            if (confirm('Are you sure to delete this department?')) {
+                $.post("<?= site_url('department/delete') ?>", { id: $(this).data('id') }, function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status === 'success') {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            }
+        });
     });
-});
 </script>

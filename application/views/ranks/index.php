@@ -73,10 +73,11 @@
             <div class="modal-dialog" role="document">
                 <form id="leaveTypeForm">
                     <input type="hidden" name="id" id="id">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                    <div class="modal-content" style="border: none;">
+                        <div class="modal-header" style="background-color: #01a9ac; color: #fff; border-top-left-radius: .3rem; border-top-right-radius: .3rem;">
                             <h5 class="modal-title">Tambah Golongan</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            style="color: #fff; opacity: 1;">
                         </div>
                         <div class="modal-body">
                             <div class="form-group">

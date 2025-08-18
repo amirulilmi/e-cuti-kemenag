@@ -259,7 +259,7 @@
 
                                 <div class="form-group form-primary mb-3">
                                     <input type="text" id="nip" name="nip" class="form-control email" required
-                                        placeholder="NIP">
+                                        placeholder="Email">
                                     <span class="form-bar"></span>
                                 </div>
                                 <div class="form-group form-primary mb-3">
