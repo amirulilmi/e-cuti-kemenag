@@ -8,12 +8,20 @@ class Leave extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Leave_model');
+        $this->load->model('Calender_model');
         $this->load->helper(['url', 'form']);
         $this->load->library(['session']);
     }
 
     public function apply()
     {
+
+        // custom calender
+        $holidays = $this->Calender_model->get_all();
+    
+        $data['holiday_dates'] = array_column($holidays, 'holiday_date');
+
+
         $id_leave = $id_leave ?? $this->input->get('id', true) ?? null;
         $leaveData = null;
         if ($id_leave) {

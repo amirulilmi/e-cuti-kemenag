@@ -48,37 +48,45 @@
                                 <span class="pcoded-mtext">Tipe Cuti</span>
                             </a>
                         </li>
+                        <li class="<?php echo ($page_name == 'calender') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('calender/index') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-calendar"></i></span>
+                                <span class="pcoded-mtext">Kalender</span>
+                            </a>
+                        </li>
+                        <li class="<?php echo ($page_name == 'FAQ') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('FAQ/index') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-folder"></i></span>
+                                <span class="pcoded-mtext">Template Surat</span>
+                            </a>
+                        </li>
 
                         <div class="pcoded-navigatio-lavel">Application</div>
                         <li
                             class="pcoded-hasmenu <?php echo ($page_name == 'leave' || $page_name == 'apply_leave' || $page_name == 'leave_request' || $page_name == 'my_leave') ? 'active pcoded-trigger' : ''; ?>">
 
-                            <li class="<?php echo ($page_name == 'apply_leave') ? 'active' : ''; ?>">
-                                <a href="<?php echo base_url('Leave/apply') ?>">
-                                    <span class="pcoded-micon"><i class="feather icon-edit"></i></span>
-                                    <span class="pcoded-mtext">Ajukan Cuti</span>
-                                </a>
-                            </li>
+                        <li class="<?php echo ($page_name == 'apply_leave') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('Leave/apply') ?>">
+                                <span class="pcoded-micon"><i class="feather icon-edit"></i></span>
+                                <span class="pcoded-mtext">Ajukan Cuti</span>
+                            </a>
+                        </li>
 
-                            <li class="<?php echo ($page_name == 'my_leave') ? 'active' : ''; ?>">
-                                <a href="<?php echo base_url('Leave/myLeave') ?>">
-                                    <span class="pcoded-micon"><i class="feather icon-user"></i></span>
-                                    <span class="pcoded-mtext">Cuti Saya</span>
-                                </a>
-                            </li>
-                            <li class="<?php echo ($page_name == 'all_leave') ? 'active' : ''; ?>">
-                                <a href="<?php echo base_url('Leave/all_leaves') ?>">
-                                    <span class="pcoded-micon"><i class="feather  icon-file-text"></i></span>
-                                    <span class="pcoded-mtext">Semua Cuti</span>
-                                </a>
-                            </li>
+                        <li class="<?php echo ($page_name == 'my_leave') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('Leave/myLeave') ?>">
+                                <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                                <span class="pcoded-mtext">Cuti Saya</span>
+                            </a>
+                        </li>
+                        <li class="<?php echo ($page_name == 'all_leave') ? 'active' : ''; ?>">
+                            <a href="<?php echo base_url('Leave/all_leaves') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-file-text"></i></span>
+                                <span class="pcoded-mtext">Semua Cuti</span>
+                            </a>
+                        </li>
 
-                            <li class="<?php echo ($page_name == 'FAQ') ? 'active' : ''; ?>">
-                                <a href="<?php echo base_url('FAQ/index') ?>">
-                                    <span class="pcoded-micon"><i class="feather  icon-folder"></i></span>
-                                    <span class="pcoded-mtext">Template Surat</span>
-                                </a>
-                            </li>
+
+
                         </li>
                     </ul>
                 <?php endif; ?>

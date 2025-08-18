@@ -89,8 +89,13 @@
                 </div>
             </div>
         </div>
+
+
+
+
     </div>
 </div>
+
 <!-- Add Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -311,6 +316,7 @@
     });
 </script>
 
+<!-- DATATABLES -->
 <script>
     $(document).ready(function () {
         $('#faqTable').DataTable({

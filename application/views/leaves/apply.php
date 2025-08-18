@@ -314,6 +314,8 @@ $(document).ready(function () {
     const numberDaysInput = document.getElementById('number_days');
     var editData = <?php echo isset($leaveData) ? json_encode($leaveData) : 'null'; ?>;
 
+    const redDates = <?php echo json_encode($holiday_dates); ?>; 
+
     // Set min attribute
     const today = new Date().toISOString().split('T')[0];
     startDateInput.setAttribute('min', today);
@@ -384,6 +386,19 @@ $(document).ready(function () {
             const date = new Date(this.value);
             const day = date.getUTCDay();
 
+            // ✅ cek apakah tanggal masuk daftar merah
+            if (redDates.includes(this.value)) {
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'Tanggal ini adalah tanggal merah, tidak dapat dipilih untuk cuti.',
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: 'OK'
+                });
+                this.value = '';
+                calculateDays();
+                return;
+            }
+
             // Validate based on leave type
             if ((day === 6 && !allowSat) || (day === 0 && !allowSun)) {
                 Swal.fire({
@@ -433,6 +448,26 @@ $(document).ready(function () {
         return false;
     }
 
+    // function calculateDays() {
+    //     const startDateValue = startDateInput.value;
+    //     const endDateValue = endDateInput.value;
+
+    //     if (startDateValue && endDateValue) {
+    //         const startDate = new Date(startDateValue);
+    //         const endDate = new Date(endDateValue);
+    //         let count = 0;
+
+    //         for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    //             if (!isWeekend(d)) count++;
+                
+    //         }
+
+    //         numberDaysInput.value = count;
+    //     } else {
+    //         numberDaysInput.value = '';
+    //     }
+    // }
+
     function calculateDays() {
         const startDateValue = startDateInput.value;
         const endDateValue = endDateInput.value;
@@ -443,7 +478,15 @@ $(document).ready(function () {
             let count = 0;
 
             for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-                if (!isWeekend(d)) count++;
+                const isoDate = d.toISOString().split('T')[0];
+
+                // skip weekend kalau tidak diizinkan
+                if (isWeekend(d)) continue;
+
+                // skip tanggal merah dari DB
+                if (redDates.includes(isoDate)) continue;
+
+                count++;
             }
 
             numberDaysInput.value = count;
@@ -451,6 +494,7 @@ $(document).ready(function () {
             numberDaysInput.value = '';
         }
     }
+
 
     handleDateInput(startDateInput);
     handleDateInput(endDateInput);
