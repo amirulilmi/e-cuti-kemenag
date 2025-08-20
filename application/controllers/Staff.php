@@ -498,10 +498,21 @@ class Staff extends CI_Controller
             $leaveTypeId = $leave['leave_type_id'];
             $requestedDays = $leave['requested_days'];
 
+            // ambil assign_days
+            $assign = $assignDays[$leaveTypeId] ?? 0;
+           
+            // ambil n1 + n2 
+            $n1 = $n1Days[$leaveTypeId] ?? 0;
+            $n2 = $n2Days[$leaveTypeId] ?? 0;
+
+            // print_r($additional);exit;
             if (!isset($leaveSummary[$leaveTypeId])) {
                 $leaveSummary[$leaveTypeId] = [
                     'type' => $leave['leave_type'],
-                    'total' => $assignDays[$leaveTypeId] ?? 0,
+                    'total_awal' => $assignDays[$leaveTypeId] ?? 0,
+                    'n1' => $n1,
+                    'n2' => $n2,
+                    'total' => $assign + $n1 + $n2,     // assign_days + n1 + n2
                     'remaining' => $availableDays[$leaveTypeId] ?? 0,
                     'used' => 0
                 ];
@@ -622,30 +633,31 @@ class Staff extends CI_Controller
         $old_password = $this->input->post('old_password');
         $new_password = $this->input->post('new_password');
         $confirm_password = $this->input->post('confirm_password');
-        $emp_id = $this->session->userdata('session_id');
+        $emp_id = $this->input->post('employee_id');
 
+        // print_r($emp_id);exit;
         // Validation
         if (empty($old_password) || empty($new_password) || empty($confirm_password)) {
-            echo json_encode(array('status' => 'error', 'message' => 'Please fill in all fields'));
+            echo json_encode(array('status' => 'error', 'message' => 'Silahkan isi semua kolom.'));
             return;
         }
 
         if ($new_password !== $confirm_password) {
-            echo json_encode(array('status' => 'error', 'message' => 'New password and confirmation do not match'));
+            echo json_encode(array('status' => 'error', 'message' => 'Kata sandi baru dan konfirmasi kata sandi tidak cocok.'));
             return;
         }
 
         // Verify old password
         if (!$this->Staff_model->verify_old_password($emp_id, $old_password)) {
-            echo json_encode(array('status' => 'error', 'message' => 'Old password is incorrect'));
+            echo json_encode(array('status' => 'error', 'message' => 'Kata sandi lama salah.'));
             return;
         }
 
         // Change password
         if ($this->Staff_model->change_password($emp_id, $new_password)) {
-            echo json_encode(array('status' => 'success', 'message' => 'Password changed successfully'));
+            echo json_encode(array('status' => 'success', 'message' => 'Password berhasil diubah'));
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to change password'));
+            echo json_encode(array('status' => 'error', 'message' => 'Gagal mengubah kata sandi.'));
         }
     }
 }

@@ -241,7 +241,7 @@
                 <!-- Department  end -->
 
                 <!-- Start Newest Employee -->
-                <div class="col-md-12 col-xl-4">
+                <div class="col-md-12 col-xl-6">
                     <!-- contact data table card start -->
                     <div class="card">
                         <div class="card-header">
@@ -283,7 +283,7 @@
                 <!-- End Newest Employee -->
 
                 <!-- Start Recent Leave -->
-                <div class="col-md-12 col-xl-4">
+                <div class="col-md-12 col-xl-6">
                     <!-- contact data table card start -->
 
                     <div class="card">

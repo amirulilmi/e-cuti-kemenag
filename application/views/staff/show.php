@@ -43,9 +43,9 @@
                                                 <span class="text-white"><?php echo htmlspecialchars($employee['designation']); ?></span>
                                             </div>
                                         </div>
-                                        <?php if ($session_id == $get_id): ?>
+                                        <?php if ($this->session->userdata('role') == 'Admin'): ?>
                                             <div class="pull-right cover-btn">
-                                                <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Change Password</button>
+                                                <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
                                             </div>
                                         <?php endif; ?>    
                                     </div>
@@ -385,8 +385,6 @@
                     </div>
                     </div>
 
-
-
                     <!-- Modal Assign Supervisor start -->
                     <div id="edit-supervisor" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -448,10 +446,11 @@
                     <div class="auth-box card-block">
                         <div class="row m-b-20">
                             <div class="col-md-12">
-                                <h3 class="text-center txt-primary">Change your Password</h3>
+                                <h3 class="text-center txt-primary">Ubah Password</h3>
                             </div>
                         </div>
                         <hr>
+                        <input type="hidden" name="employee_id" id="employee_id" value="<?php echo $employee['emp_id']; ?>">
                         <div class="input-group">
                             <input id="old_password" type="password" class="form-control" placeholder="Old Password">
                             <span class="md-line"></span>
@@ -466,13 +465,13 @@
                         </div>
                         <div class="row m-t-15">
                             <div class="col-md-12">
-                                <button id="change_password" type="button" class="btn btn-primary btn-md btn-block waves-effect text-center">Change</button>
+                                <button id="change_password" type="button" class="btn btn-primary btn-md btn-block waves-effect text-center">Update</button>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-10">
-                                <p class="text-inverse text-left"><b>You will be authenticated after password is changed.</b></p>
+                                <p class="text-inverse text-left"><b>Kamu akan logout setelah kata sandi diubah.</b></p>
                             </div>
                         </div>
                     </div>
@@ -696,13 +695,14 @@
             old_password: $('#old_password').val(),
             new_password: $('#new_password').val(),
             confirm_password: $('#confirm_password').val(),
+            employee_id: $('#employee_id').val(),
             action: "change_password",
         };
 
         if (data.old_password.trim() === '' || data.new_password.trim() === '' || data.confirm_password.trim() === '') {
             Swal.fire({
                 icon: 'warning',
-                text: 'Please fill in all fields.',
+                text: 'Harap isi semua kolom.',
                 confirmButtonColor: '#ffc107',
                 confirmButtonText: 'OK'
             });
@@ -712,7 +712,7 @@
         if (data.new_password !== data.confirm_password) {
             Swal.fire({
                 icon: 'warning',
-                text: 'New password and confirmation password do not match.',
+                text: 'Kata sandi baru dan konfirmasi kata sandi tidak cocok.',
                 confirmButtonColor: '#ffc107',
                 confirmButtonText: 'OK'
             });
@@ -725,19 +725,34 @@
             data: data,
             success: function(response) {
                 response = JSON.parse(response);
+                $('#change-password-dialog').modal('hide');
                 if (response.status == 'success') {
+                    <?php if ($this->session->userdata('role') == 'Admin') : ?>
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Password Reset Successfully',
-                        text: 'Your password has been changed successfully. Kindly login again',
+                        icon: 'info',
+                        title: 'Password Berhasil Diubah',
+                        text: 'Kata sandi berhasil diubah. Anda tetap masuk sebagai admin.',
                         confirmButtonColor: '#01a9ac',
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            $('.md-close').trigger('click');
-                            window.location = '<?= base_url('auth/logout') ?>';
+                            $('#change-password-dialog').modal('hide'); // tutup modal
                         }
                     });
+                    <?php else: ?>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Reset Kata Sandi Berhasil',
+                            text: 'Kata sandi Anda telah berhasil diubah. Silakan masuk kembali.',
+                            confirmButtonColor: '#01a9ac',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#change-password-dialog').modal('hide'); // tutup modal
+                                window.location = '<?= base_url('auth/logout') ?>';
+                            }
+                        });
+                    <?php endif; ?>
                 } else {
                     Swal.fire({
                         icon: 'error',
