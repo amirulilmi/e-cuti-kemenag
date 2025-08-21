@@ -378,9 +378,28 @@ $(document).ready(function () {
      
         availableDays = parseInt(selectedOption.data('available_days')) || 0; // simpan ke variabel global
 
+        // ===== BAGIAN BARU: Reset semua input lain =====
+        // Reset tanggal
+        $('#start_date').val('');
+        $('#end_date').val('');
+        
+        // Reset number of days
+        $('#number_days').val('0');
+        
+        // Reset remarks/alasan cuti
+        $('#remarks').val('');
+        
+        // Reset file inputs dan display names
+        $('#sick_file').val('');
+        $('#sick_file_input').val('');
+        $('#approve_file').val('');
+        $('#approve_file_input').val('');
+        
+        // Hide existing file info jika ada
+        $('.existing-file').hide();
+        // ===== AKHIR BAGIAN BARU =====
 
         // Show or hide file input if sick leave
-       
         const leaveText = selectedOption.text().toLowerCase();
         if (leaveText.includes('sakit') || leaveText === 'cuti sakit') {
             $('#sick_file_container').show();
