@@ -631,7 +631,7 @@
                             <option value="2">Forwarded to Kepala</option>
                             <option value="3">Rejected by Kepala</option>
                             <option value="4">Approved</option>
-                            <option value="5">Cancelled</option>
+                            
                             <option value="6">Recalled</option>
                         </select>
                     `);
@@ -661,14 +661,14 @@
                 if (today < startDate) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="5" selected>Cancelled</option>
+                            
                             <option value="0">Pending Admin Approval</option>
                         </select>
                     `);
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
-                           <option value="5" selected>Cancelled</option>
+                           
                         </select>
                     `);
                 }
@@ -680,7 +680,7 @@
                             <option value="2" selected>Forwarded to Kepala</option>
                             <option value="3">Rejected by Kepala</option>
                             <option value="4">Approved</option>
-                            <option value="5">Cancelled</option>
+                            
                             <option value="6">Recalled</option>
                         </select>
                     `);
