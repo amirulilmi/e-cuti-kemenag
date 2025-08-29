@@ -398,10 +398,13 @@
                         $('#leaveContainer').removeClass();
 
                         // Append the fetched staff cards to the container
-                        $('#leaveContainer').append(response);
+                        // $('#leaveContainer').append(response);
+
+                        $('#leaveContainer').html(response);
                     } else {
                         // Maintain the current setup and append the response
-                        $('#leaveContainer').append(response);
+                        // $('#leaveContainer').append(response);
+                        $('#leaveContainer').html(response);
                     }
                 }
             });

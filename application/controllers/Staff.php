@@ -24,7 +24,6 @@ class Staff extends CI_Controller
 
     public function index($departmentName = null)
     {
-
         // Ambil dari URL segment atau query string
         if ($departmentName) {
             $departmentName = urldecode($departmentName);
@@ -32,12 +31,8 @@ class Staff extends CI_Controller
             $departmentName = urldecode($this->input->get('department'));
         }
 
-
         $data['departmentFilter'] = $departmentName ?: 'Show all';
         $data['departments'] = $this->Staff_model->get_departments();
-
-        $data['page_name'] = 'staff_list';
-
 
         $data['page_name'] = 'staff_list';
         $this->load->view('templates/header', $data);
@@ -52,7 +47,7 @@ class Staff extends CI_Controller
     {
         $searchQuery = $this->input->post('searchQuery');
         $departmentFilter = $this->input->post('departmentFilter');
-
+    
         $department_id = null;
         if (!empty($departmentFilter) && $departmentFilter !== 'Show all') {
             $dept = $this->db->get_where('tbldepartments', ['department_name' => $departmentFilter])->row_array();
@@ -60,102 +55,122 @@ class Staff extends CI_Controller
                 $department_id = $dept['id'];
             }
         }
-
+    
         $staffList = $this->Staff_model->get_staff($department_id, $searchQuery);
-
-        $output = '';
-        foreach ($staffList as $staff) {
-            $imgPath = (!empty($staff['image_path']) && file_exists(FCPATH . ltrim($staff['image_path'], '/')))
-                ? base_url($staff['image_path'])
-                : base_url('uploads/images/default-avatar.jpg');
-
-            $fullName = $staff['first_name'] . ' ' . $staff['last_name'];
-
-            $output .= '
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="card user-card" style="position: relative; overflow: hidden;">
-                    <div class="card-block">
-                        <div class="user-image" style="position: relative;">
-                            <img src="' . $imgPath . '" class="img-radius staff-photo" alt="' . htmlspecialchars($fullName) . '" style="width:250px; height:250px; border-radius:5%; display:block; margin:0 auto;">
-                            <span style="
-                                position: absolute;
-                                top: 0;
-                                left: 0;
-                                width: 100%;
-                                height: 100%;
-                                background: rgba(0, 0, 0, 0.5);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                gap: 6px;
-                                opacity: 0;
-                                transition: opacity 0.3s ease;
-                                
-                            " class="hover-buttons">
-                                <a href="' . site_url('staff/profile/' . $staff['emp_id'] . '?view=2') . '" 
-                                   class="btn btn-sm btn-primary" data-popup="lightbox">
-                                   <i class="icofont icofont-eye-alt"></i>
-                                </a>
-                                <a href="' . site_url('staff/form/' . $staff['emp_id']) . '" 
-                                   class="btn btn-sm btn-warning" data-popup="lightbox">
-                                   <i class="icofont icofont-edit"></i>
-                                </a>';
-            if ($staff['designation'] !== 'Admin') {
-                $output .= '
-                                <a href="#" class="btn btn-sm btn-danger delete-staff" data-id="' . $staff['emp_id'] . '">
-                                    <i class="icofont icofont-ui-delete"></i>
-                                </a>';
-            }
-            $output .= '
-                            </span>
-                        </div>
-                        <h6 style="margin-top: 10px;">' . htmlspecialchars($fullName) . '</h6>
-                        <p class="text-muted">' . htmlspecialchars($staff['designation']) . '</p>
-                        <p>' . htmlspecialchars($staff['email_id']) . '</p>
-                    </div>
-                </div>
-            </div>
-            <script>
-                document.querySelectorAll(".user-image").forEach(function(el) {
-                    el.addEventListener("mouseenter", function() {
-                        el.querySelector(".hover-buttons").style.opacity = "1";
-                    });
-                    el.addEventListener("mouseleave", function() {
-                        el.querySelector(".hover-buttons").style.opacity = "0";
-                    });
-
-                    // SweetAlert2 Delete Confirm
-                    const deleteButtons = document.querySelectorAll(".delete-staff");
-                    deleteButtons.forEach(btn => {
-                        btn.addEventListener("click", function(e) {
-                            e.preventDefault();
-                            let staffId = this.getAttribute("data-id");
-                            Swal.fire({
-                                title: "Yakin ingin menghapus?",
-                                text: "Data staff ini akan dihapus permanen!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#d33",
-                                cancelButtonColor: "#3085d6",
-                                confirmButtonText: "Ya, hapus!",
-                                cancelButtonText: "Batal"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "' . site_url('staff/delete/') . '" + staffId;
-                                }
-                            });
-                        });
-                    });
-                });
-            </script>
-            ';
-
-
-
-        }
-        echo $output ?: '<div class="col-12"><p>No staff found.</p></div>';
+    
+        $data['staffList'] = $staffList;
+        $this->load->view('staff/_staff_cards', $data); 
     }
 
+    // public function fetch_staff()
+    // {
+    //     $searchQuery = $this->input->post('searchQuery');
+    //     $departmentFilter = $this->input->post('departmentFilter');
+
+    //     $department_id = null;
+    //     if (!empty($departmentFilter) && $departmentFilter !== 'Show all') {
+    //         $dept = $this->db->get_where('tbldepartments', ['department_name' => $departmentFilter])->row_array();
+    //         if ($dept) {
+    //             $department_id = $dept['id'];
+    //         }
+    //     }
+
+    //     $staffList = $this->Staff_model->get_staff($department_id, $searchQuery);
+
+    //     $output = '';
+    //     foreach ($staffList as $staff) {
+    //         $imgPath = (!empty($staff['image_path']) && file_exists(FCPATH . ltrim($staff['image_path'], '/')))
+    //             ? base_url($staff['image_path'])
+    //             : base_url('uploads/images/default-avatar.jpg');
+
+    //         $fullName = $staff['first_name'] . ' ' . $staff['last_name'];
+
+    //         $output .= '
+    //         <div class="col-lg-3 col-md-4 col-sm-6">
+    //             <div class="card user-card" style="position: relative; overflow: hidden;">
+    //                 <div class="card-block">
+    //                     <div class="user-image" style="position: relative;">
+    //                         <img src="' . $imgPath . '" class="img-radius staff-photo" alt="' . htmlspecialchars($fullName) . '" style="width:250px; height:250px; border-radius:5%; display:block; margin:0 auto;">
+    //                         <span style="
+    //                             position: absolute;
+    //                             top: 0;
+    //                             left: 0;
+    //                             width: 100%;
+    //                             height: 100%;
+    //                             background: rgba(0, 0, 0, 0.5);
+    //                             display: flex;
+    //                             align-items: center;
+    //                             justify-content: center;
+    //                             gap: 6px;
+    //                             opacity: 0;
+    //                             transition: opacity 0.3s ease;
+                                
+    //                         " class="hover-buttons">
+    //                             <a href="' . site_url('staff/profile/' . $staff['emp_id'] . '?view=2') . '" 
+    //                                class="btn btn-sm btn-primary" data-popup="lightbox">
+    //                                <i class="icofont icofont-eye-alt"></i>
+    //                             </a>
+    //                             <a href="' . site_url('staff/form/' . $staff['emp_id']) . '" 
+    //                                class="btn btn-sm btn-warning" data-popup="lightbox">
+    //                                <i class="icofont icofont-edit"></i>
+    //                             </a>';
+    //         if ($staff['designation'] !== 'Admin') {
+    //             $output .= '
+    //                             <a href="#" class="btn btn-sm btn-danger delete-staff" data-id="' . $staff['emp_id'] . '">
+    //                                 <i class="icofont icofont-ui-delete"></i>
+    //                             </a>';
+    //         }
+    //         $output .= '
+    //                         </span>
+    //                     </div>
+    //                     <h6 style="margin-top: 10px;">' . htmlspecialchars($fullName) . '</h6>
+    //                     <p class="text-muted">' . htmlspecialchars($staff['designation']) . '</p>
+    //                     <p>' . htmlspecialchars($staff['email_id']) . '</p>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //         <script>
+    //             document.querySelectorAll(".user-image").forEach(function(el) {
+    //                 el.addEventListener("mouseenter", function() {
+    //                     el.querySelector(".hover-buttons").style.opacity = "1";
+    //                 });
+    //                 el.addEventListener("mouseleave", function() {
+    //                     el.querySelector(".hover-buttons").style.opacity = "0";
+    //                 });
+
+    //                 // SweetAlert2 Delete Confirm
+    //                 const deleteButtons = document.querySelectorAll(".delete-staff");
+    //                 deleteButtons.forEach(btn => {
+    //                     btn.addEventListener("click", function(e) {
+    //                         e.preventDefault();
+    //                         let staffId = this.getAttribute("data-id");
+    //                         Swal.fire({
+    //                             title: "Yakin ingin menghapus?",
+    //                             text: "Data staff ini akan dihapus permanen!",
+    //                             icon: "warning",
+    //                             showCancelButton: true,
+    //                             confirmButtonColor: "#d33",
+    //                             cancelButtonColor: "#3085d6",
+    //                             confirmButtonText: "Ya, hapus!",
+    //                             cancelButtonText: "Batal"
+    //                         }).then((result) => {
+    //                             if (result.isConfirmed) {
+    //                                 window.location.href = "' . site_url('staff/delete/') . '" + staffId;
+    //                             }
+    //                         });
+    //                     });
+    //                 });
+    //             });
+    //         </script>
+    //         ';
+
+
+
+    //     }
+    //     echo $output ?: '<div class="col-12"><p>No staff found.</p></div>';
+    // }
+
+   
     public function form($id = null)
     {
         $data['staff'] = null;
