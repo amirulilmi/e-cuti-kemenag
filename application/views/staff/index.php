@@ -53,7 +53,10 @@
 
             </div>
             <!-- Staff Cards -->
-            <div id="staffContainer" class="row users-card"></div>
+            <!-- <div id="staffContainer" class="row users-card"></div> -->
+            <div class="users-card">
+                
+            </div>
 
         </div>
     </div>
@@ -61,7 +64,7 @@
 
 
 
-<script>
+<!-- <script>
     $(document).ready(function () {
         var selectedDepartment = '<?= $departmentFilter ?>';
 
@@ -88,4 +91,84 @@
 
         fetchStaff();
     });
+</script> -->
+
+<!-- SCRIPT FETCH STAFF -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // delete confirm
+    document.addEventListener("click", function(e) {
+        if (e.target.closest(".delete-staff")) {
+            e.preventDefault();
+            let staffId = e.target.closest(".delete-staff").getAttribute("data-id");
+            Swal.fire({
+                title: "Yakin ingin menghapus?",
+                text: "Data staff ini akan dihapus permanen!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Ya, hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "<?= site_url('staff/delete/') ?>" + staffId;
+                }
+            });
+        }
+    });
+});
+
+// hover mouse
+document.addEventListener("mouseover", function(e) {
+    const el = e.target.closest(".user-image");
+    if (el) {
+        let hoverBtn = el.querySelector(".hover-buttons");
+        if (hoverBtn) hoverBtn.style.opacity = "1";
+    }
+});
+
+document.addEventListener("mouseout", function(e) {
+    const el = e.target.closest(".user-image");
+    if (el) {
+        let hoverBtn = el.querySelector(".hover-buttons");
+        if (hoverBtn) hoverBtn.style.opacity = "0";
+    }
+});
 </script>
+
+<script>
+$(document).ready(function () {
+    var selectedDepartment = '<?= $departmentFilter ?>';
+
+    function fetchStaff() {
+        var searchQuery = $('#searchInput').val();
+        var departmentFilter = (selectedDepartment === 'Show all') ? '' : selectedDepartment;
+
+        $.post("<?= site_url('staff/fetch_staff') ?>",
+            { searchQuery: searchQuery, departmentFilter: departmentFilter },
+            function (response) {
+                $('.users-card').html(response); // ganti staff list di container
+            }
+        );
+    }
+
+    $('#searchInput').on('keyup', fetchStaff);
+
+    // ✅ perbaikan: pakai .dropdown-menu .dropdown-item
+    $('.dropdown-menu .dropdown-item').on('click', function (e) {
+        e.preventDefault();
+        selectedDepartment = $(this).text().trim();
+
+        // update text dropdown toggle
+        $('#bydepartment').html('<i class="icofont icofont-home"></i> ' + selectedDepartment);
+
+        fetchStaff();
+    });
+
+    // load awal
+    fetchStaff();
+});
+
+</script>
+<!-- AKHIR SCRIPT FETCH STAFF -->
