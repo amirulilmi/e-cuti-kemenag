@@ -91,7 +91,7 @@
                                     <td><?= $h['holiday_date'] ?></td>
                                     <td><?= $h['description'] ?></td>
                                     <td>
-                                        <button class="btn btn-outline-danger btn-sm delete-btn"
+                                        <button class="btn btn-outline-danger btn-sm btn-delete"
                                             style="border-radius: 20px; padding: 4px 12px; font-weight: 500; margin-left: 5px;">
                                             <i class="icofont icofont-ui-delete"></i>Hapus</button>
                                     </td>
@@ -276,6 +276,7 @@
     });
 </script>
 
+<!-- hover calender -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
