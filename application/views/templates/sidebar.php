@@ -3,6 +3,7 @@
 
         <nav class="pcoded-navbar">
             <div class="pcoded-inner-navbar main-menu">
+                <!-- Admin -->
                 <?php if ($this->session->userdata('role') == 'Admin'): ?>
                     <div class="pcoded-navigatio-lavel">Navigasi</div>
                     <ul class="pcoded-item pcoded-left-item">
@@ -90,7 +91,7 @@
                         </li>
                     </ul>
                 <?php endif; ?>
-
+                <!-- Admin -->
 
                 <!-- STAFF -->
                 <?php if ($this->session->userdata('role') == 'Staff'): ?>
@@ -135,7 +136,7 @@
                 <!-- AKHIR STAFF -->
 
                 <!-- KEPALA DAN PTSP-->
-                <?php if ($this->session->userdata('role') == 'PTSP' || $this->session->userdata('role') == 'Kepala'): ?>
+                <?php if (in_array($this->session->userdata('role'), ['PTSP', 'Kepala', 'Manager'])): ?>
                     <div class="pcoded-navigatio-lavel">Navigasi</div>
                     <ul class="pcoded-item pcoded-left-item">
                         <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">

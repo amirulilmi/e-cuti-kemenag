@@ -57,10 +57,11 @@
                             $first_name = $this->session->userdata('first_name');
                             $middle_name = $this->session->userdata('middle_name');
                             $last_name = $this->session->userdata('last_name');
+                            $role = $this->session->userdata('role');
 
                             echo '<img src="' . $image_src . '" class="img-radius" alt="User-Profile-Image">';
                             ?>
-                            <span><?php echo $first_name . ' ' . $middle_name . ' ' . $last_name; ?></span>
+                            <span><?php echo $first_name . ' ' . $middle_name . ' ' . $last_name . ' (' . $role . ')'; ?></span>
                             <i class="feather icon-chevron-down"></i>
                         </div>
                         <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn"

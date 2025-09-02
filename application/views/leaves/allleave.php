@@ -37,23 +37,27 @@
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Show all') ? 'active' : ''; ?>"
                                             href="?leave_status=Show all">Show all</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Manager Approval') ? 'active' : ''; ?>"
+                                            href="?leave_status=0">Pending Manager Approval</a>
+                                        <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Manager') ? 'active' : ''; ?>"
+                                            href="?leave_status=1">Rejected by Manager</a>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Admin Approval') ? 'active' : ''; ?>"
-                                            href="?leave_status=0">Pending Admin Approval</a>
+                                            href="?leave_status=2">Pending Admin Approval</a>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Admin') ? 'active' : ''; ?>"
-                                            href="?leave_status=1">Rejected by Admin</a>
+                                            href="?leave_status=3">Rejected by Admin</a>
                                     <?php endif; ?>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Forwarded to Kepala') ? 'active' : ''; ?>"
-                                        href="?leave_status=2">Forwarded to Kepala</a>
+                                        href="?leave_status=4">Forwarded to Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Kepala') ? 'active' : ''; ?>"
-                                        href="?leave_status=3">Rejected by Kepala</a>
+                                        href="?leave_status=5">Rejected by Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Approved') ? 'active' : ''; ?>"
-                                        href="?leave_status=4">Approved</a>
+                                        href="?leave_status=6">Approved</a>
 
                                     <?php if ($this->session->userdata('role') != 'Kepala'): ?>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Cancelled') ? 'active' : ''; ?>"
-                                            href="?leave_status=5">Cancelled</a>
+                                            href="?leave_status=7">Cancelled</a>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Recalled') ? 'active' : ''; ?>"
-                                            href="?leave_status=6">Recalled</a>
+                                            href="?leave_status=8">Recalled</a>
                                     <?php endif; ?>
                                 </div>
                             </li>
@@ -524,13 +528,15 @@
 
             // Map leave status strings to numeric values
             var statusMap = {
-                "Pending Admin Approval": 0,
-                "Rejected by Admin": 1,
-                "Forwarded to Kepala": 2,
-                "Rejected by Kepala": 3,
-                "Approved": 4,
-                "Cancelled": 5,
-                "Recalled": 6
+                "Pending Manager Approval": 0,
+                "Rejected by Manager": 1,
+                "Pending Admin Approval": 2,
+                "Rejected by Admin": 3,
+                "Forwarded to Kepala": 4,
+                "Rejected by Kepala": 5,
+                "Approved": 6,
+                "Cancelled": 7,
+                "Recalled": 8
             };
 
             // Convert the string leave status to its corresponding numeric value
@@ -560,6 +566,12 @@
             var formattedEndDate = formatDate(endDate);
 
             switch (leaveStatus) {
+                case "Pending Manager Approval":
+                    $('#modalLeaveStatus').addClass('text-primary');
+                    break;
+                case "Rejected by Manager":
+                    $('#modalLeaveStatus').addClass('text-danger');
+                    break;
                 case "Pending Admin Approval":
                     $('#modalLeaveStatus').addClass('text-primary');
                     break;
@@ -588,23 +600,33 @@
 
             var modalMessage;
             switch (leaveStatusValue) {
-                case 0: // Pending Admin Approval
+                case 0: // Pending manager
                     if (today > endDate) {
                         modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> on <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> is pending, but the requested leave period has already passed. It is too late to approve or reject this request.";
                     } else {
                         modalMessage = "Anda akan meninjau permohonan cuti yang masih menunggu persetujuan yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b>. Mohon periksa rincian dengan teliti dan tentukan apakah permintaan tersebut disetujui atau ditolak.";
                     }
                     break;
-                case 1: // Rejected by Admin
+                case 1: // Rejected by manager
                     modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> has been rejected by admin";
                     break;
-                case 2: // Forwarded to Kepala
+                case 2: // Pending Admin Approval
+                    if (today > endDate) {
+                        modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> on <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> is pending, but the requested leave period has already passed. It is too late to approve or reject this request.";
+                    } else {
+                        modalMessage = "Anda akan meninjau permohonan cuti yang masih menunggu persetujuan yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b>. Mohon periksa rincian dengan teliti dan tentukan apakah permintaan tersebut disetujui atau ditolak.";
+                    }
+                    break;
+                case 3: // Rejected by Admin
+                    modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> has been rejected by admin";
+                    break;
+                case 4: // Forwarded to Kepala
                     modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> forwarder to kepala";
                     break;
-                case 3: // Rejected by Kepala
+                case 5: // Rejected by Kepala
                     modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> has been rejected by Kepala";
                     break;
-                case 4: // Approved
+                case 6: // Approved
                     if (today < startDate) {
                         modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> telah disetujui. Anda dapat memilih untuk menarik kembali persetujuan tersebut jika diperlukan.";
                     } else if (today >= startDate && today <= endDate) {
@@ -613,10 +635,10 @@
                         modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> telah diselesaikan.";
                     }
                     break;
-                case 5: // Cancelled
+                case 7: // Cancelled
                     modalMessage = "Permohonan cuti yang diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> telah dibatalkan.";
                     break;
-                case 6: // Recalled
+                case 8: // Recalled
                     modalMessage = "Permohonan cuti yang disetujui dan diajukan oleh <b>" + staff + "</b> pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> telah ditarik kembali.";
                     break;
                 default:
@@ -625,72 +647,100 @@
             $('#modalMessage').html(modalMessage);
 
             // Determine if options should be shown based pada leave status and dates
-            if (leaveStatusValue === 0) { // Pending Admin Approval
+            if (leaveStatusValue === 0) { // Pending Manager Approval
                 if (today <= endDate) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="0" selected>Pending Admin Approval</option>
-                            <option value="1">Rejected by Admin</option>
-                            <option value="2">Forwarded to Kepala</option>
-                            <option value="3">Rejected by Kepala</option>
-                            <option value="4">Approved</option>
-                            <option value="5">Cancelled</option>
-                            <option value="6">Recalled</option>
+                            <option value="0" selected>Pending Manager Approval</option>
+                            <option value="1">Rejected by Manager</option>
+                            <option value="2">Pending Admin Approval</option>
+                            <option value="3">Rejected by Admin</option>
+                            <option value="4">Forwarded to Kepala</option>
+                            <option value="5">Rejected by Kepala</option>
+                            <option value="6">Approved</option>
+                            <option value="7">Cancelled</option>
+                            <option value="8">Recalled</option>
                         </select>
                     `);
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
-                            <option value="0" selected>Pending Admin Approval</option>
+                            <option value="0" selected>Pending Manager Approval</option>
                         </select>
                     `);
                 }
-            } else if (leaveStatusValue === 4) { // Approved
+
+            } 
+            if (leaveStatusValue === 2) { // Pending Admin Approval
+                if (today <= endDate) {
+                    $('#radioButtonsContainer').append(`
+                        <select name="select" id="select" class="form-control form-control-primary">
+                            <option value="0" selected>Pending Manager Approval</option>
+                            <option value="1">Rejected by Manager</option>
+                            <option value="2">Pending Admin Approval</option>
+                            <option value="3">Rejected by Admin</option>
+                            <option value="4">Forwarded to Kepala</option>
+                            <option value="5">Rejected by Kepala</option>
+                            <option value="6">Approved</option>
+                            <option value="7">Cancelled</option>
+                            <option value="8">Recalled</option>
+                        </select>
+                    `);
+                } else {
+                    $('#radioButtonsContainer').append(`
+                        <select name="select" id="select" class="form-control form-control-primary" disabled>
+                            <option value="2" selected>Pending Admin Approval</option>
+                        </select>
+                    `);
+                }
+                
+            }
+            else if (leaveStatusValue === 6) { // Approved
                 if (today < startDate || (today >= startDate && today <= endDate)) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="4" selected>Approved</option>
-                            <option value="6">Recalled</option>
+                            <option value="6" selected>Approved</option>
+                            <option value="8">Recalled</option>
                         </select>
                     `);
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
-                            <option value="4" selected>Approved</option>
+                            <option value="6" selected>Approved</option>
                         </select>
                     `);
                 }
-            } else if (leaveStatusValue === 5) { // Cancelled
+            } else if (leaveStatusValue === 7) { // Cancelled
                 if (today < startDate) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="5" selected>Cancelled</option>
-                            <option value="0">Pending Admin Approval</option>
+                            <option value="7" selected>Cancelled</option>
+                            <option value="0">Pending Manager Approval</option>
                         </select>
                     `);
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
-                           <option value="5" selected>Cancelled</option>
+                           <option value="7" selected>Cancelled</option>
                         </select>
                     `);
                 }
             }
-            else if (leaveStatusValue === 2) { // Forwarded to Kepala
+            else if (leaveStatusValue === 4) { // Forwarded to Kepala
                 if (today < startDate) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="2" selected>Forwarded to Kepala</option>
-                            <option value="3">Rejected by Kepala</option>
-                            <option value="4">Approved</option>
-                            <option value="5">Cancelled</option>
-                            <option value="6">Recalled</option>
+                            <option value="4" selected>Forwarded to Kepala</option>
+                            <option value="5">Rejected by Kepala</option>
+                            <option value="6">Approved</option>
+                            <option value="7">Cancelled</option>
+                            <option value="8">Recalled</option>
                         </select>
                     `);
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
-                           <option value="2" selected>Forwarded to Kepala</option>
+                           <option value="4" selected>Forwarded to Kepala</option>
                         </select>
                     `);
                 }
@@ -706,17 +756,27 @@
 
             // Update the button based on the status and date
             var updateButtonHTML;
-            if (leaveStatusValue === 0) { // Pending
+            if (leaveStatusValue === 0) { // Pending Manager Approval
                 if (today > endDate) {
                     updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> PASSED </b></button>';
                 } else {
                     updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
                 }
             }
-            else if (leaveStatusValue === 1) { // Rejected by Admin
+            else if (leaveStatusValue === 1) { // Rejected by Manager
                 updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED BY ADMIN </b></button>';
             }
-            else if (leaveStatusValue === 2) { // Forwarded to Kepala
+            if (leaveStatusValue === 2) { // Pending Manager Approval
+                if (today > endDate) {
+                    updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> PASSED </b></button>';
+                } else {
+                    updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
+                }
+            }
+            else if (leaveStatusValue === 3) { // Rejected by Manager
+                updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED BY ADMIN </b></button>';
+            }
+            else if (leaveStatusValue === 4) { // Forwarded to Kepala
                 if (today >= startDate && today <= endDate) {
                     updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
                 } else if (today < startDate) {
@@ -725,10 +785,10 @@
                     updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request has <b style="color: #eb3422;"> EXPIRED </b></button>';
                 }
             }
-            else if (leaveStatusValue === 3) { // Rejected by Kepala
+            else if (leaveStatusValue === 5) { // Rejected by Kepala
                 updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED BY KEPALA </b></button>';
             }
-            else if (leaveStatusValue === 4) { // Approved
+            else if (leaveStatusValue === 6) { // Approved
                 if (today >= startDate && today <= endDate) {
                     updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
                 } else if (today < startDate) {
@@ -736,14 +796,14 @@
                 } else {
                     updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request has <b style="color: #eb3422;"> EXPIRED </b></button>';
                 }
-            } else if (leaveStatusValue === 5) { // Cancelled
+            } else if (leaveStatusValue === 7) { // Cancelled
                 if (today < startDate) {
                     updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
                 } else {
                     updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> CANCELLED </b></button>';
                 }
             }
-            else if (leaveStatusValue === 6) { // Recalled
+            else if (leaveStatusValue === 8) { // Recalled
                 updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> RECALLED </b></button>';
             }
 

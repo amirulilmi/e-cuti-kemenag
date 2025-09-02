@@ -229,6 +229,12 @@
                                                         <i class="helper"></i>PTSP
                                                     </label>
                                                 </div>
+                                                <div class="radio radiofill radio-inline">
+                                                    <label>
+                                                        <input type="radio" name="role" value="Manager" <?php echo (isset($staff['role']) && $staff['role'] === 'Manager') ? 'checked="checked"' : ''; ?>>
+                                                        <i class="helper"></i>Manager
+                                                    </label>
+                                                </div>
                                                 <?php if ($session_role == 'Admin'): ?>
                                                     <div class="radio radiofill radio-inline">
                                                         <label>

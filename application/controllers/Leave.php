@@ -390,13 +390,15 @@ class Leave extends CI_Controller
 
         // tentukan nama status
         $statusMap = [
-            '0' => 'Pending Admin Approval',
-            '1' => 'Rejected by Admin',
-            '2' => 'Forwarded to Kepala',
-            '3' => 'Rejected by Kepala',
-            '4' => 'Approved',
-            '5' => 'Cancelled',
-            '6' => 'Recalled',
+            '0' => 'Pending Manager Approval',
+            '1' => 'Rejected by Manager',
+            '2' => 'Pending Admin Approval',
+            '3' => 'Rejected by Admin',
+            '4' => 'Forwarded to Kepala',
+            '5' => 'Rejected by Kepala',
+            '6' => 'Approved',
+            '7' => 'Cancelled',
+            '8' => 'Recalled',
         ];
         $selectedLeaveStatusName = $statusMap[$leaveStatusFilter] ?? 'Show all';
 
@@ -434,13 +436,15 @@ class Leave extends CI_Controller
         // exit;
         // Mapping status cuti
         $statusMap = [
-            '0' => 'Pending Admin Approval',
-            '1' => 'Rejected by Admin',
-            '2' => 'Forwarded to Kepala',
-            '3' => 'Rejected by Kepala',
-            '4' => 'Approved',
-            '5' => 'Cancelled',
-            '6' => 'Recalled',
+            '0' => 'Pending Manager Approval',
+            '1' => 'Rejected by Manager',
+            '2' => 'Pending Admin Approval',
+            '3' => 'Rejected by Admin',
+            '4' => 'Forwarded to Kepala',
+            '5' => 'Rejected by Kepala',
+            '6' => 'Approved',
+            '7' => 'Cancelled',
+            '8' => 'Recalled',
         ];
 
         // Ambil data dari model
@@ -466,36 +470,46 @@ class Leave extends CI_Controller
             // Konversi status ke text
             switch ($leave->leave_status) {
                 case 0:
-                    $leaveStatusText = 'Pending Admin Approval';
+                    $leaveStatusText = 'Pending Manager Approval';
                     $badgeClass = 'bg-primary';
                     $iconClass = 'fa fa-hourglass-start';
                     break;
                 case 1:
-                    $leaveStatusText = 'Rejected by Admin';
+                    $leaveStatusText = 'Rejected by Manager';
                     $badgeClass = 'badge-danger';
                     $iconClass = 'fa fa-ban';
                     break;
                 case 2:
-                    $leaveStatusText = 'Forwarded to Kepala';
-                    $badgeClass = 'bg-success';
-                    $iconClass = 'fa fa-check-circle';
+                    $leaveStatusText = 'Pending Admin Approval';
+                    $badgeClass = 'bg-primary';
+                    $iconClass = 'fa fa-hourglass-start';
                     break;
                 case 3:
-                    $leaveStatusText = 'Rejected by Kepala';
+                    $leaveStatusText = 'Rejected by Admin';
                     $badgeClass = 'badge-danger';
                     $iconClass = 'fa fa-ban';
                     break;
                 case 4:
-                    $leaveStatusText = 'Approved';
+                    $leaveStatusText = 'Forwarded to Kepala';
                     $badgeClass = 'bg-success';
                     $iconClass = 'fa fa-check-circle';
                     break;
                 case 5:
+                    $leaveStatusText = 'Rejected by Kepala';
+                    $badgeClass = 'badge-danger';
+                    $iconClass = 'fa fa-ban';
+                    break;
+                case 6:
+                    $leaveStatusText = 'Approved';
+                    $badgeClass = 'bg-success';
+                    $iconClass = 'fa fa-check-circle';
+                    break;
+                case 7:
                     $leaveStatusText = 'Cancelled';
                     $badgeClass = 'badge-warning';
                     $iconClass = 'fa fa-times-circle';
                     break;
-                case 6:
+                case 8:
                     $leaveStatusText = 'Recalled';
                     $badgeClass = 'badge-warning';
                     $iconClass = 'fa fa-undo-alt';
@@ -609,13 +623,15 @@ class Leave extends CI_Controller
         $selected_leave_status_name = 'Show all';
         if ($leave_status_filter !== 'Show all') {
             $status_names = [
-                '0' => 'Pending Admin Approval',
-                '1' => 'Rejected by Admin',
-                '2' => 'Forwarded to Kepala',
-                '3' => 'Rejected by Kepala',
-                '4' => 'Approved',
-                '5' => 'Cancelled',
-                '6' => 'Recalled',
+                '0' => 'Pending Manager Approval',
+                '1' => 'Rejected by Manager',
+                '2' => 'Pending Admin Approval',
+                '3' => 'Rejected by Admin',
+                '4' => 'Forwarded to Kepala',
+                '5' => 'Rejected by Kepala',
+                '6' => 'Approved',
+                '7' => 'Cancelled',
+                '8' => 'Recalled',
             ];
             $selected_leave_status_name = isset($status_names[$leave_status_filter]) ? $status_names[$leave_status_filter] : 'Show all';
 
@@ -631,13 +647,15 @@ class Leave extends CI_Controller
         ];
 
         $statusMap = [
-            '0' => 'Pending Admin Approval',
-            '1' => 'Rejected by Admin',
-            '2' => 'Forwarded to Kepala',
-            '3' => 'Rejected by Kepala',
-            '4' => 'Approved',
-            '5' => 'Cancelled',
-            '6' => 'Recalled',
+            '0' => 'Pending Manager Approval',
+            '1' => 'Rejected by Manager',
+            '2' => 'Pending Admin Approval',
+            '3' => 'Rejected by Admin',
+            '4' => 'Forwarded to Kepala',
+            '5' => 'Rejected by Kepala',
+            '6' => 'Approved',
+            '7' => 'Cancelled',
+            '8' => 'Recalled',
         ];
         // Get leave status counts
         $leave_status_counts = $this->Leave_model->get_leave_status_counts($filters);
@@ -715,10 +733,10 @@ class Leave extends CI_Controller
         foreach ($leave_data as $leave) {
             $image_path = empty($leave['image_path']) ? base_url('assets/images/user-card/img-round1.jpg') : base_url($leave['image_path']);
 
-            $status_names = [0 => 'Pending Admin Approval', 1 => 'Rejected by Admin', 2 => 'Forwarded to Kepala', 3 => 'Rejected by Kepala', 4 => 'Approved', 5 => 'Cancelled', 6 => 'Recalled'];
+            $status_names = [0 => 'Pending Manager Approval', 1 => 'Rejected by Manager', 2 => 'Pending Admin Approval', 3 => 'Rejected by Admin', 4 => 'Forwarded to Kepala', 5 => 'Rejected by Kepala', 6 => 'Approved',7 => 'Cancelled', 8 => 'Recalled'];
             $leave_status_text = $status_names[$leave['leave_status']];
 
-            $badge_classes = [0 => 'bg-primary', 1 => 'bg-danger', 2 => 'bg-success', 3 => 'badge-danger', 4 => 'bg-success', 5 => 'badge-warning', 6 => 'badge-warning'];
+            $badge_classes = [0 => 'bg-primary', 1 => 'bg-danger', 2 => 'bg-primary', 3 => 'bg-danger', 4 => 'bg-success', 5 => 'badge-danger', 6 => 'bg-success', 7 => 'badge-warning', 8 => 'badge-warning'];
             $badge_class = $badge_classes[$leave['leave_status']];
 
             $leave_type_name = isset($leave_types[$leave['leave_type_id']]) ? $leave_types[$leave['leave_type_id']] : 'Unknown';
@@ -877,7 +895,7 @@ class Leave extends CI_Controller
 
 
                 $this->Leave_model->update_available_days($emp_id, $leave_type_id, $remaining_days, 'add');
-            } elseif ($status == 4) {
+            } elseif ($status == 6) {
                 // Approve leave - deduct days
                 $this->Leave_model->update_available_days($emp_id, $leave_type_id, $requested_days, 'subtract');
             }
@@ -886,7 +904,7 @@ class Leave extends CI_Controller
         // Update leave status
         if ($this->Leave_model->update_leave_status($id, $status, $letter_number, $approveFilePath, $remarks_admin)) {
             // Send notifications for approved or recalled leaves
-            if ($status == 4 || $status == 6) {
+            if ($status == 6 || $status == 8) {
                 $this->send_leave_status_notification($emp_id, $leave_type_id, $from_date, $to_date, $status);
             }
             echo json_encode(['status' => 'success', 'message' => 'Leave status updated successfully.']);
