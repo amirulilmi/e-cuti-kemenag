@@ -212,6 +212,11 @@
                                             <div class="row" id="radioButtonsContainer">
                                                 <!-- options will be dynamically inserted here -->
                                             </div>
+                                            <div class="row mt-3" id="remarksInfoAdmin">
+                                                <label for="remarksAdmin"><strong>Alasan : </strong></label>
+                                                <textarea id="remarksAdmin" name="remarksAdmin"
+                                                    class="form-control" disabled></textarea>
+                                            </div>
 
                                         </div>
                                         <div class="row m-t-15">
@@ -388,6 +393,8 @@
             var approvalFile = $(this).data('approval-file');
             var sickFile = $(this).data('sick-file');
 
+            var remarksAdmin = $(this).data('remarks-admin');
+
             // console.log('sick file : ' + sickFile);
             if (approvalFile) {
                 let fileUrl = "<?= base_url() ?>" + approvalFile;
@@ -418,10 +425,17 @@
                 $('#letterNumber').val(''); // kosongkan kalau null
             }
 
+            // Isi nomor surat kalau ada
+            if (remarksAdmin) {
+                $('#remarksAdmin').val(remarksAdmin);
+            } else {
+                $('#remarksAdmin').val(''); // kosongkan kalau null
+            }
+
             // Get the data attributes from the clicked link
             var leaveType = $(this).data('leave-type');
             var reason = $(this).data('leave-reason');
-            var remaing = $(this).data('leave-remaing');
+            var remaining = $(this).data('leave-remaining');
             var requestedDays = $(this).data('requested-days');
             var staff = $(this).data('leave-staff');
             var leaveStatus = $(this).data('leave-status');
@@ -456,7 +470,7 @@
             $('#modalRequester').text(staff);
             $('#modalReviewer').text(reviewer);
             $('#modalRequestedDays').text(requestedDays);
-            $('#modalRemaing').text(remaing);
+            $('#modalRemaing').text(remaining);
             $('#modalLeaveStatus').text(leaveStatus);
             $('#modalLeaveId').text(leaveId);
 

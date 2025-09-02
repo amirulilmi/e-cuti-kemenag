@@ -78,8 +78,8 @@ class Leave_model extends CI_Model
         $this->db->from('tblleave l');
         $this->db->join('tblleavetype lt', 'l.leave_type_id = lt.id');
         $this->db->where('l.empid', $userId);
-        $this->db->where('l.leave_status', 4);
-
+        $this->db->where('l.leave_status', 6);
+        $this->db->where('l.leave_type_id', 1);//hanya menampilkan yang tahunan
         return $this->db->get()->result_array();
     }
 

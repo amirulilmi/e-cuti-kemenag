@@ -149,7 +149,7 @@
                                         <li><strong>Tipe Cuti: </strong> <span id="modalLeaveType"></span></li>
                                         <li><strong>Hari Cuti di Ajukan: </strong> <span id="modalRequestedDays"></span>
                                         </li>
-                                        <li><strong>Sisa Jatah Cuti: </strong> <span id="modalRemaing"></span></li>
+                                        <li><strong>Sisa Jatah Cuti: </strong> <span id="modalRemaining"></span></li>
                                         <li><strong>Status: </strong> <span id="modalLeaveStatus"></span>
                                         </li>
                                     </ul>
@@ -509,7 +509,7 @@
             // Get the data attributes from the clicked link
             var leaveType = $(this).data('leave-type');
             var reason = $(this).data('leave-reason');
-            var remaing = $(this).data('leave-remaing');
+            var remaining = $(this).data('leave-remaining');
             var requestedDays = $(this).data('requested-days');
             var staff = $(this).data('leave-staff');
             var leaveStatus = $(this).data('leave-status');
@@ -547,10 +547,12 @@
             $('#modalRequester').text(staff);
             $('#modalReviewer').text(reviewer);
             $('#modalRequestedDays').text(requestedDays);
-            $('#modalRemaing').text(remaing);
+            $('#modalRemaining').text(remaining);
             $('#modalLeaveStatus').text(leaveStatus);
             $('#modalLeaveId').text(leaveId);
 
+            console.log('leave-remaining :');
+            console.log(remaining);
             $('.leave-id').val(leaveId);
 
             // Clear previous radio buttons
@@ -671,12 +673,10 @@
                 }
 
             } 
-            if (leaveStatusValue === 2) { // Pending Admin Approval
+            else if (leaveStatusValue === 2) { // Pending Admin Approval
                 if (today <= endDate) {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="0" selected>Pending Manager Approval</option>
-                            <option value="1">Rejected by Manager</option>
                             <option value="2">Pending Admin Approval</option>
                             <option value="3">Rejected by Admin</option>
                             <option value="4">Forwarded to Kepala</option>
@@ -733,7 +733,7 @@
                             <option value="4" selected>Forwarded to Kepala</option>
                             <option value="5">Rejected by Kepala</option>
                             <option value="6">Approved</option>
-                            <option value="7">Cancelled</option>
+                            
                             <option value="8">Recalled</option>
                         </select>
                     `);
@@ -814,7 +814,7 @@
                 var stat = $('#select').val();
                 console.log("COMPARE: " + stat);
                 // Kalau statusnya Approved (4), biarkan tombol selalu aktif
-                if (leaveStatusValue == 4) {
+                if (leaveStatusValue == 6) {
                     $('.status-update').prop('disabled', false).removeClass('btn-disabled').addClass('btn-primary');
                 } else {
                     // Bandingkan status asli dengan pilihan select

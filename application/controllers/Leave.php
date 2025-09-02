@@ -347,6 +347,7 @@ class Leave extends CI_Controller
         $availableDays = $this->Leave_model->get_available_days($userId);
         $assignDays = $this->Leave_model->get_assign_days();
 
+        // print_r($leaveData);exit;
         $n1Days = $this->Leave_model->get_n1($userId);
         $n2Days = $this->Leave_model->get_n2($userId);
        
@@ -450,6 +451,7 @@ class Leave extends CI_Controller
         // Ambil data dari model
         $leaves = $this->Leave_model->getFilteredStaff($searchQuery, $leaveStatusFilter, $userId, $statusMap);
 
+        // print_r($leaves);exit;
         // Jika tidak ada data
         if (empty($leaves)) {
             echo '<div class="col-sm-12 text-center">
@@ -578,7 +580,7 @@ class Leave extends CI_Controller
                                       data-expiry-date="' . $leave->to_date . '"
                                       data-start-date="' . $leave->from_date . '"
                                       data-leave-reason="' . $leave->remarks . '"
-                                      data-leave-remaing="' . $leave->remaining_days . '"
+                                      data-leave-remaining="' . $leave->remaining_days . '"
                                       data-leave-staff="' . $leave->staff_name . '"
                                       data-leave-type="' . $leaveTypeName . '"
                                       data-leave-status="' . $leaveStatusText . '"
@@ -587,6 +589,7 @@ class Leave extends CI_Controller
                                       data-letter-number="' . $leave->letter_number . '" 
                                       data-approval-file="' . $leave->file . '"
                                       data-sick-file="' . $leave->sick_file . '"
+                                      data-remarks-admin="' . $leave->remarks_admin . '"
                                       >
                                         <span class="point-marker bg-danger"></span>Review
                                    </a>';
@@ -765,20 +768,25 @@ class Leave extends CI_Controller
                     <div class="media">
                         <a class="media-left media-middle" href="#">
                             <img class="media-object img-60" src="' . $image_path . '" alt="Employee Image"  style="width:80px; height:80px; object-fit:cover; object-position:top; border-radius:50%;">
+
                         </a>
+                        
                         <div class="media-body media-middle">
                             <div class="company-name">
                                 <p>' . $leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name'] . '</p>
                                 <span class="text-muted f-14">Dibuat pada ' . $posting_date . '</span>
-                                <span class="text-success fw-bolder f-14">No Surat: ' .$leave['remarks_admin'] . '</span>
+                                
                             </div>
                             <div class="job-badge">
                                 <label class="label ' . $badge_class . '">' . $leave_status_text . '</label>
                             </div>
+                            
                         </div>
+                        
                     </div>
                 </div>
                 <div class="card-block" >
+                <span class="text-success fw-bolder f-14">No Surat: ' .$leave['letter_number'] . '</span>
                     <h6 class="job-card-desc">Tipe Cuti: ' . $leave_type_name . '</h6>
                     <p class="text-muted">Pengajuan cuti ini berlaku untuk periode dari: <strong>' . $from_date . '</strong> sampai <strong>' . $to_date . '</strong></p>
                     <div class="job-meta-data"><i class="icofont icofont-safety"></i>Jumlah Hari Cuti diajukan: ' . $leave['requested_days'] . '</div>
@@ -880,20 +888,18 @@ class Leave extends CI_Controller
         $current_status = $leave_data['leave_status'];
         $from_date = $leave_data['from_date'];
         $to_date = $leave_data['to_date'];
-
+        // print_r($current_status);exit;
         // Handle available days updates
-        // Jalankan hanya jika status baru berbeda dengan current status
+        // Jalankan hanya jika status baru berbeda dengan current status  -> status = inputan status sekarang, current_status = get status terakhir dari db
         if ($status != $current_status) {
-            if ($status == 6 && $current_status == 4) {
+            if ($status == 8 && $current_status == 6) {
                 // Recall leave - restore days
                 // echo '<pre>';
-                // print_r($leave_type_id);
+
+                $remaining_days = $this->calculate_business_days($from_date, $to_date, $leave_type_id);
+                // print_r($remaining_days);
                 // echo '</pre>';
                 // exit;
-                $remaining_days = $this->calculate_business_days($from_date, $to_date, $leave_type_id);
-
-
-
                 $this->Leave_model->update_available_days($emp_id, $leave_type_id, $remaining_days, 'add');
             } elseif ($status == 6) {
                 // Approve leave - deduct days
