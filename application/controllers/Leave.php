@@ -351,7 +351,7 @@ class Leave extends CI_Controller
         // print_r($leaveData);exit;
         $n1Days = $this->Leave_model->get_n1($userId);
         $n2Days = $this->Leave_model->get_n2($userId);
-       
+
 
         // print_r($availableDays);exit;
         // kalkulasi summary
@@ -362,7 +362,7 @@ class Leave extends CI_Controller
 
             // ambil assign_days
             $assign = $assignDays[$leaveTypeId] ?? 0;
-           
+
             // ambil n1 + n2 
             $n1 = $n1Days[$leaveTypeId] ?? 0;
             $n2 = $n2Days[$leaveTypeId] ?? 0;
@@ -620,26 +620,56 @@ class Leave extends CI_Controller
     public function all_leaves()
     {
         // $leave_status_filter = $this->input->get('leave_status') ? $this->input->get('leave_status') : 'Show all';
-        $leave_status_filter = $this->input->get('leave_status');
-        $leave_status_filter = ($leave_status_filter !== null) ? $leave_status_filter : 'Show all';
-        
-        // Get selected leave status name
-        $selected_leave_status_name = 'Show all';
-        if ($leave_status_filter !== 'Show all') {
-            $status_names = [
-                '0' => 'Pending Manager Approval',
-                '1' => 'Rejected by Manager',
-                '2' => 'Pending Admin Approval',
-                '3' => 'Rejected by Admin',
-                '4' => 'Forwarded to Kepala',
-                '5' => 'Rejected by Kepala',
-                '6' => 'Approved',
-                '7' => 'Cancelled',
-                '8' => 'Recalled',
-            ];
-            $selected_leave_status_name = isset($status_names[$leave_status_filter]) ? $status_names[$leave_status_filter] : 'Show all';
+        // $leave_status_filter = $this->input->get('leave_status');
+        // $leave_status_filter = ($leave_status_filter !== null) ? $leave_status_filter : 'Show all';
 
+        // // Get selected leave status name
+        // $selected_leave_status_name = 'Show all';
+        // if ($leave_status_filter !== 'Show all') {
+        //     $status_names = [
+        //         '0' => 'Pending Manager Approval',
+        //         '1' => 'Rejected by Manager',
+        //         '2' => 'Pending Admin Approval',
+        //         '3' => 'Rejected by Admin',
+        //         '4' => 'Forwarded to Kepala',
+        //         '5' => 'Rejected by Kepala',
+        //         '6' => 'Approved',
+        //         '7' => 'Cancelled',
+        //         '8' => 'Recalled',
+        //     ];
+        //     $selected_leave_status_name = isset($status_names[$leave_status_filter]) ? $status_names[$leave_status_filter] : 'Show all';
+
+        // }
+
+        $leave_status_filter = $this->input->get('leave_status');
+
+        // kalau tidak ada parameter ?leave_status= di URL
+        if ($leave_status_filter === null) {
+            $role = $this->session->userdata('role');
+            if ($role === 'Manager') {
+                $leave_status_filter = '0'; // Pending Manager Approval
+            } elseif ($role === 'Kepala') {
+                $leave_status_filter = '4'; // Forwarded to Kepala
+            } else {
+                $leave_status_filter = 'Show all'; // default untuk role lain
+            }
         }
+
+        // Get selected leave status name
+        $status_names = [
+            '0' => 'Pending Manager Approval',
+            '1' => 'Rejected by Manager',
+            '2' => 'Pending Admin Approval',
+            '3' => 'Rejected by Admin',
+            '4' => 'Forwarded to Kepala',
+            '5' => 'Rejected by Kepala',
+            '6' => 'Approved',
+            '7' => 'Cancelled',
+            '8' => 'Recalled',
+        ];
+
+        $selected_leave_status_name = isset($status_names[$leave_status_filter]) ? $status_names[$leave_status_filter] : 'Show all';
+
 
         // Prepare filters for model
         $filters = [
@@ -692,7 +722,7 @@ class Leave extends CI_Controller
 
         $search_query = $this->input->post('searchQuery');
         $leave_status_filter = $this->input->post('leaveStatusFilter');
-        
+
         $filters = [
             'user_role' => $this->session->userdata('role'),
             'user_id' => $this->session->userdata('emp_id'),
@@ -739,7 +769,7 @@ class Leave extends CI_Controller
         foreach ($leave_data as $leave) {
             $image_path = empty($leave['image_path']) ? base_url('assets/images/user-card/img-round1.jpg') : base_url($leave['image_path']);
 
-            $status_names = [0 => 'Pending Manager Approval', 1 => 'Rejected by Manager', 2 => 'Pending Admin Approval', 3 => 'Rejected by Admin', 4 => 'Forwarded to Kepala', 5 => 'Rejected by Kepala', 6 => 'Approved',7 => 'Cancelled', 8 => 'Recalled'];
+            $status_names = [0 => 'Pending Manager Approval', 1 => 'Rejected by Manager', 2 => 'Pending Admin Approval', 3 => 'Rejected by Admin', 4 => 'Forwarded to Kepala', 5 => 'Rejected by Kepala', 6 => 'Approved', 7 => 'Cancelled', 8 => 'Recalled'];
             $leave_status_text = $status_names[$leave['leave_status']];
 
             $badge_classes = [0 => 'bg-primary', 1 => 'bg-danger', 2 => 'bg-primary', 3 => 'bg-danger', 4 => 'bg-success', 5 => 'badge-danger', 6 => 'bg-success', 7 => 'badge-warning', 8 => 'badge-warning'];
@@ -750,7 +780,7 @@ class Leave extends CI_Controller
             $from_date = date('jS F, Y', strtotime($leave['from_date']));
             $to_date = date('jS F, Y', strtotime($leave['to_date']));
             // $posting_date = date('jS F, Y', strtotime($leave['created_date']));
-            
+
             $formatter = new IntlDateFormatter(
                 'id_ID',
                 IntlDateFormatter::LONG,
@@ -758,11 +788,12 @@ class Leave extends CI_Controller
                 'Asia/Jakarta',
                 IntlDateFormatter::GREGORIAN
             );
-           if (stripos($leave_type_name, 'tahunan') !== false){
-            $available_days = $leave['available_days'];
-           }else{
-            $available_days = '-';
-           } ;
+            if (stripos($leave_type_name, 'tahunan') !== false) {
+                $available_days = $leave['available_days'];
+            } else {
+                $available_days = '-';
+            }
+            ;
 
             $posting_date = $formatter->format(new DateTime($leave['created_date']));
 
@@ -794,7 +825,7 @@ class Leave extends CI_Controller
                     </div>
                 </div>
                 <div class="card-block" >
-                <span class="text-success fw-bolder f-14">No Surat: ' .$leave['letter_number'] . '</span>
+                <span class="text-success fw-bolder f-14">No Surat: ' . $leave['letter_number'] . '</span>
                     <h6 class="job-card-desc">Tipe Cuti: ' . $leave_type_name . '</h6>
                     <p class="text-muted">Pengajuan cuti ini berlaku untuk periode dari: <strong>' . $from_date . '</strong> sampai <strong>' . $to_date . '</strong></p>
                     <div class="job-meta-data"><i class="icofont icofont-safety"></i>Jumlah Hari Cuti diajukan: ' . $leave['requested_days'] . '</div>
@@ -811,7 +842,7 @@ class Leave extends CI_Controller
                                 data-target="#confirm-mail" 
                                 data-submission-date="' . $leave['created_date'] . '" 
                                 data-expiry-date="' . $leave['to_date'] . '" 
-                                data-start-date="' . $leave['from_date']. '" 
+                                data-start-date="' . $leave['from_date'] . '" 
                                 data-leave-reason="' . $leave['remarks'] . '" 
                                 data-leave-remaining="' . $available_days . '" 
                                 data-leave-staff="' . $leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name'] . '" 
@@ -822,7 +853,7 @@ class Leave extends CI_Controller
                                 data-letter-number="' . $leave['letter_number'] . '" 
                                 data-approval-file="' . $leave['file'] . '"
                                 data-sick-file="' . $leave['sick_file'] . '"
-                                data-remarks-admin="' .$leave['remarks_admin']. '"
+                                data-remarks-admin="' . $leave['remarks_admin'] . '"
                                 >
                                 Review
                             </button>
