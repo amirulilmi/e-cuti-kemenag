@@ -319,7 +319,7 @@ $(document).ready(function () {
     // Set min attribute
     const today = new Date().toISOString().split('T')[0];
     // startDateInput.setAttribute('min', today);
-    endDateInput.setAttribute('min', today);
+    // endDateInput.setAttribute('min', today);
 
     let allowSat = false;
     let allowSun = false;
