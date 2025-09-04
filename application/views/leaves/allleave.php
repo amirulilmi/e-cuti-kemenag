@@ -34,26 +34,32 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="bystatus">
                                     <?php if ($this->session->userdata('role') != 'Kepala'): ?>
+                                        <?php if ($this->session->userdata('role') != 'Manager' ): ?>  
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Show all') ? 'active' : ''; ?>"
                                             href="?leave_status=Show all">Show all</a>
                                         <div class="dropdown-divider"></div>
+                                        <?php endif; ?>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Manager Approval') ? 'active' : ''; ?>"
                                             href="?leave_status=0">Pending Manager Approval</a>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Manager') ? 'active' : ''; ?>"
                                             href="?leave_status=1">Rejected by Manager</a>
+                                    <?php if ($this->session->userdata('role') != 'Manager' ): ?>  
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Pending Admin Approval') ? 'active' : ''; ?>"
-                                            href="?leave_status=2">Pending Admin Approval</a>
+                                            href="?leave_status=2">Pending Admin Approval</a>       
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Admin') ? 'active' : ''; ?>"
                                             href="?leave_status=3">Rejected by Admin</a>
                                     <?php endif; ?>
+                                    <?php endif; ?>
+
+                                    <?php if ($this->session->userdata('role') != 'Manager' ): ?>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Forwarded to Kepala') ? 'active' : ''; ?>"
                                         href="?leave_status=4">Forwarded to Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Rejected by Kepala') ? 'active' : ''; ?>"
                                         href="?leave_status=5">Rejected by Kepala</a>
                                     <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Approved') ? 'active' : ''; ?>"
                                         href="?leave_status=6">Approved</a>
-
-                                    <?php if ($this->session->userdata('role') != 'Kepala'): ?>
+                                    <?php endif; ?>
+                                    <?php if ($this->session->userdata('role') != 'Kepala' && $this->session->userdata('role') != 'Manager'): ?>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Cancelled') ? 'active' : ''; ?>"
                                             href="?leave_status=7">Cancelled</a>
                                         <a class="dropdown-item <?php echo ($selected_leave_status_name === 'Recalled') ? 'active' : ''; ?>"
