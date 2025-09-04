@@ -150,6 +150,7 @@ class Leave extends CI_Controller
 
             // Ambil data leave yang akan diupdate
             $existingLeave = $this->Leave_model->get_leave_by_id($leave_id);
+            // print_r($existingLeave);exit;
             if (!$existingLeave) {
                 echo json_encode(['status' => 'error', 'message' => 'Data leave tidak ditemukan']);
                 return;
@@ -158,7 +159,7 @@ class Leave extends CI_Controller
             // Validasi permission
             if (
                 $this->session->userdata('role') !== 'Admin' &&
-                $existingLeave['emp_id'] != $this->session->userdata('emp_id')
+                $existingLeave['empid'] != $this->session->userdata('emp_id')
             ) {
                 echo json_encode(['status' => 'error', 'message' => 'Anda tidak memiliki akses untuk mengupdate data ini']);
                 return;

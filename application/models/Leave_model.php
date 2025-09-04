@@ -336,15 +336,15 @@ class Leave_model extends CI_Model
         $this->db->order_by('l.created_date', 'DESC'); // urutkan berdasarkan created_date terbaru
         
         // Apply role-based conditions
-        if (isset($filters['user_role']) && $filters['user_role'] !== 'Admin') {
-            if ($filters['user_role'] === 'Manager') {
-                $this->db->where('e.department', $filters['user_department']);
-                $this->db->where('l.empid !=', $filters['user_id']);
-            } elseif (isset($filters['is_supervisor']) && $filters['is_supervisor'] == 1) {
-                $this->db->where('e.supervisor_id', $filters['user_id']);
-                $this->db->where('l.empid !=', $filters['user_id']);
-            }
-        }
+        // if (isset($filters['user_role']) && $filters['user_role'] !== 'Admin') {
+        //     if ($filters['user_role'] === 'Manager') {
+        //         $this->db->where('e.department', $filters['user_department']);
+        //         $this->db->where('l.empid !=', $filters['user_id']);
+        //     } elseif (isset($filters['is_supervisor']) && $filters['is_supervisor'] == 1) {
+        //         $this->db->where('e.supervisor_id', $filters['user_id']);
+        //         $this->db->where('l.empid !=', $filters['user_id']);
+        //     }
+        // }
 
         // print_r($filters);
         // Apply leave status filter
