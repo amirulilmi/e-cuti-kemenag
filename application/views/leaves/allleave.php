@@ -769,7 +769,7 @@
                 }
             }
             else if (leaveStatusValue === 1) { // Rejected by Manager
-                updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED BY ADMIN </b></button>';
+                updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED BY MANAGER </b></button>';
             }
             if (leaveStatusValue === 2) { // Pending Manager Approval
                 if (today > endDate) {
