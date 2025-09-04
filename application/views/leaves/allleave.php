@@ -166,7 +166,7 @@
                                         <!-- New input for sick file -->
                                         <div class="mb-3" id="sickFileInfo"
                                             style="display:none;width:410px;margin-left:-14px">
-                                            <label for="sickFile"><strong>Surat Sakit</strong></label>
+                                            <label for="sickFile"><strong>Dokumen Tambahan/ Surat Sakit</strong></label>
                                             <div class="d-flex">
                                                 <input type="text" class="form-control" id="sickFileName" readonly>
                                                 <a id="sickFileLink" href="#" target="_blank"
@@ -178,7 +178,7 @@
                                         <div class="mb-3" id="approvalFileInfo" class="mb-2"
                                             style="display:none;width:410px;margin-left:-14px">
                                             <label for="approvalFile"><strong>Surat
-                                                    Persetujuan/Pengajuan</strong></label>
+                                                    Persetujuan/ Pengajuan</strong></label>
                                             <div class="d-flex mb-2">
                                                 <input type="text" class="form-control" id="approvalFileName" readonly>
                                                 <a id="approvalFileLink" href="#" target="_blank"
@@ -509,7 +509,13 @@
             // Get the data attributes from the clicked link
             var leaveType = $(this).data('leave-type');
             var reason = $(this).data('leave-reason');
-            var remaining = $(this).data('leave-remaining');
+            // var remaining = $(this).data('leave-remaining');
+            if (leaveType.toLowerCase().includes("tahunan")) {
+                // kondisi kalau ada kata "tahunan"
+                var remaining = $(this).data('leave-remaining');
+            } else{
+                var remaining = '-';
+            }
             var requestedDays = $(this).data('requested-days');
             var staff = $(this).data('leave-staff');
             var leaveStatus = $(this).data('leave-status');
@@ -715,7 +721,6 @@
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary">
                             <option value="7" selected>Cancelled</option>
-                            <option value="0">Pending Manager Approval</option>
                         </select>
                     `);
                 } else {

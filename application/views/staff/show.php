@@ -43,7 +43,7 @@
                                                 <span class="text-white"><?php echo htmlspecialchars($employee['designation']); ?></span>
                                             </div>
                                         </div>
-                                        <?php if ($this->session->userdata('role') == 'Admin'): ?>
+                                        <?php if ($this->session->userdata('role') == 'Admin' || $this->session->userdata('role') == 'Staff'): ?>
                                             <div class="pull-right cover-btn">
                                                 <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
                                             </div>
@@ -77,14 +77,15 @@
                                 <div class="col-xl-4">
                                     <!-- user contact card left side start -->
                                     <div class="card">
+                                        <?php if ($user_role === 'Adminn'): ?>
                                         <div class="card-block groups-contact" style="margin-bottom:-43px">
                                             <div class="card-header">
+                                                
                                                 <h5 class="card-header-text">Assigned Supervisor</h5>
-                                                <?php if ($user_role === 'Admin'): ?>
                                                     <button data-toggle="modal" data-target="#edit-supervisor" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right">
                                                         <i class="icofont icofont-settings"></i>
                                                     </button>
-                                                <?php endif; ?>
+                                                
                                             </div>
                                             <ul class="list-group">
                                                 <?php if ($supervisor): ?>
@@ -98,6 +99,7 @@
                                                 <?php endif; ?>
                                             </ul>
                                         </div>
+                                        <?php endif; ?>
                                         
                                         <div class="card-block groups-contact">
                                             <div class="card-header">
@@ -125,12 +127,21 @@
                                                                 <?php foreach ($assigned_leave_types as $leaveType): ?>
                                                                     <tr>
                                                                         <td><?php echo htmlspecialchars($leaveType['leave_type']); ?></td>
-                                                                        <td><?php echo htmlspecialchars($leaveType['assign_days']); ?></td>
-                                                                        <td><?php echo htmlspecialchars($leaveType['available_days']); ?></td>
+                                                                        <?php if (stripos($leaveType['leave_type'], 'tahunan') !== false): ?>
+                                                                            <td><?php echo htmlspecialchars($leaveType['assign_days']); ?></td>
+                                                                            <td><?php echo htmlspecialchars($leaveType['available_days']); ?></td>
+                                                                        <?php else: ?>
+                                                                            <td>-</td>
+                                                                            <td>-</td>
+                                                                        <?php endif; ?>
                                                                                     <!-- Kolom N1 -->
                                                                         <td>
+                                                                            <?php if (stripos($leaveType['leave_type'], 'tahunan') !== false): ?>
                                                                             <?php echo htmlspecialchars($leaveType['n1'] !== null ? $leaveType['n1'] : 0); ?>
-                                                                            
+                                                                            <?php else: ?>
+                                                                                
+                                                                            <?php endif; ?> 
+                                                                            <?php if ($user_role === 'Admin'): ?>
                                                                             <!-- Tombol tambah N1 -->
                                                                             <button type="button" class="btn btn-success btn-sm p-1 ml-1 addNBtn" 
                                                                                     style="font-size:0.75rem; background-color:#0AC282; border:none;"
@@ -150,11 +161,16 @@
                                                                                     title="Hapus N1">
                                                                                 <i class="icofont icofont-trash"></i>
                                                                             </button>
+                                                                            <?php endif; ?>
                                                                         </td>
 
                                                                         <td>
-                                                                            <?php echo htmlspecialchars($leaveType['n2'] !== null ? $leaveType['n2'] : 0); ?>
+                                                                            <?php if (stripos($leaveType['leave_type'], 'tahunan') !== false): ?>
+                                                                                <?php echo htmlspecialchars($leaveType['n2'] !== null ? $leaveType['n2'] : 0); ?>
+                                                                            <?php else: ?>
                                                                                 
+                                                                            <?php endif; ?>    
+                                                                                <?php if ($user_role === 'Admin'): ?>
                                                                                 <!-- Tombol tambah N2 -->
                                                                                 <button type="button" class="btn btn-success btn-sm p-1 ml-1 addNBtn" 
                                                                                         style="font-size:0.75rem; background-color:#0AC282; border:none;"
@@ -174,6 +190,7 @@
                                                                                         title="Hapus N2">
                                                                                     <i class="icofont icofont-trash"></i>
                                                                                 </button>
+                                                                                <?php endif; ?>
                                                                         </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
