@@ -157,11 +157,13 @@
                                     <div class="card-block">
 
                                         <!-- New input for Letter Number -->
+                                        <?php if ($this->session->userdata('role') == 'Admin'): ?>
                                         <div class="row mb-3 mt-0">
                                             <label for="letterNumber"><strong>No Surat (Admin)</strong></label>
                                             <input type="text" class="form-control" id="letterNumber"
                                                 name="letterNumber" placeholder="Masukkan Nomor Surat dari Admin">
                                         </div>
+                                        <?php endif; ?>
 
                                         <!-- New input for sick file -->
                                         <div class="mb-3" id="sickFileInfo"
@@ -177,8 +179,7 @@
                                         <!-- New input for uploading Approval Letter -->
                                         <div class="mb-3" id="approvalFileInfo" class="mb-2"
                                             style="display:none;width:410px;margin-left:-14px">
-                                            <label for="approvalFile"><strong>Surat
-                                                    Persetujuan/ Pengajuan</strong></label>
+                                            <label for="approvalFile"><strong>Formulir Cuti</strong></label>
                                             <div class="d-flex mb-2">
                                                 <input type="text" class="form-control" id="approvalFileName" readonly>
                                                 <a id="approvalFileLink" href="#" target="_blank"
@@ -205,7 +206,11 @@
                                         </div>
 
                                     </div>
-                                    <?php if ($this->session->userdata('role') == 'Admin' || $this->session->userdata('role') == 'Kepala'): ?>
+                                    <?php if (
+                                        $this->session->userdata('role') == 'Admin' || 
+                                        $this->session->userdata('role') == 'Kepala' || 
+                                        $this->session->userdata('role') == 'Manager'
+                                    ): ?>
                                         <div class="row m-t-15">
                                             <div class="col-md-12">
                                                 <button type="button"
