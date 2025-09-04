@@ -350,13 +350,15 @@ class Leave_model extends CI_Model
         // Apply leave status filter
         if (isset($filters['leave_status']) && $filters['leave_status'] !== 'Show all') {
             $status_map = [
-                '0' => 'Pending Admin Approval',
-                '1' => 'Rejected by Admin',
-                '2' => 'Forwarded to Kepala',
-                '3' => 'Rejected by Kepala',
-                '4' => 'Approved',
-                '5' => 'Cancelled',
-                '6' => 'Recalled',
+                '0' => 'Pending Manager Approval',
+                '1' => 'Rejected by Manager',
+                '2' => 'Pending Admin Approval',
+                '3' => 'Rejected by Admin',
+                '4' => 'Forwarded to Kepala',
+                '5' => 'Rejected by Kepala',
+                '6' => 'Approved',
+                '7' => 'Cancelled',
+                '8' => 'Recalled',
             ];
 
             if (isset($status_map[$filters['leave_status']])) {
@@ -373,6 +375,7 @@ class Leave_model extends CI_Model
             $this->db->or_like('e.designation', $search);
             $this->db->or_like('lt.leave_type', $search);
             $this->db->or_like('l.remarks_admin', $search);
+            $this->db->or_like('l.letter_number', $search);
             $this->db->group_end();
         }
 

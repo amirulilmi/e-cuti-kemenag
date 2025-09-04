@@ -118,12 +118,12 @@
                                             <div class="j-input j-append-small-btn">
                                                 <div class="j-file-button">
                                                     Cari
-                                                    <input type="file" name="approve_file" id="approve_file" accept=".pdf, .jpg, .jpeg, .png" onchange="validateFileApprove(this)">
+                                                    <input type="file" name="approve_file" id="approve_file" accept=".pdf, .jpg, .jpeg, .png, .doc, .docx" onchange="validateFileApprove(this)">
                                                 </div>
                                                 <input type="text" id="approve_file_input" readonly="" 
                                                     placeholder="Masukkan File Pengajuan Cuti"
                                                     value="<?php echo isset($leaveData['file']) ? basename($leaveData['file']) : ''; ?>">
-                                                <span class="j-hint">Only: pdf, jpg, jpeg, png, less than 2MB</span>
+                                                <span class="j-hint">Only: pdf, docx,, jpg, jpeg, png, less than 2MB</span>
                                                 <?php if (isset($leaveData['file']) && !empty($leaveData['file'])): ?>
                                                     <div class="existing-file">
                                                         <small>File saat ini: <a href="<?php echo base_url('uploads/leave_files/' . $leaveData['file']); ?>" target="_blank"><?php echo $leaveData['file']; ?></a></small>
@@ -136,12 +136,12 @@
                                             <div class="j-input j-append-small-btn">
                                                 <div class="j-file-button">
                                                     Cari
-                                                    <input type="file" name="sick_file" id="sick_file" accept=".pdf, .jpg, .jpeg, .png" onchange="validateFile(this)">
+                                                    <input type="file" name="sick_file" id="sick_file" accept=".pdf, .jpg, .jpeg, .png, .doc, .docx" onchange="validateFile(this)">
                                                 </div>
                                                 <input type="text" id="sick_file_input" readonly="" 
-                                                    placeholder="Masukkan Surat Sakit"
+                                                    placeholder="Masukkan Dokumen Tambahan"
                                                     value="<?php echo isset($leaveData['sick_file']) ? basename($leaveData['sick_file']) : ''; ?>">
-                                                <span class="j-hint">Only: pdf, jpg, jpeg, png, less than 2MB</span>
+                                                <span class="j-hint">Only: pdf, docx, jpg, jpeg, png, less than 2MB</span>
                                                 <?php if (isset($leaveData['sick_file']) && !empty($leaveData['sick_file'])): ?>
                                                     <div class="existing-file">
                                                         <small>File saat ini: <a href="<?php echo base_url('uploads/leave_files/' . $leaveData['sick_file']); ?>" target="_blank"><?php echo $leaveData['sick_file']; ?></a></small>
@@ -404,7 +404,8 @@ $(document).ready(function () {
         if (leaveText.includes('sakit') || leaveText === 'cuti sakit') {
             $('#sick_file_container').show();
         } else {
-            $('#sick_file_container').hide();
+            // $('#sick_file_container').hide();
+            $('#sick_file_container').show();
         }
 
         // Recalculate days if dates are already selected
@@ -545,7 +546,14 @@ function validateFile(input) {
     var fileSize = file.size; // in bytes
 
     // Allowed file types and maximum file size (2MB)
-    var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    // var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    var allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
     var maxSize = 2 * 1024 * 1024; // 2MB
 
     if (!allowedTypes.includes(fileType)) {
@@ -581,7 +589,14 @@ function validateFileApprove(input) {
     var fileSize = file.size; // in bytes
 
     // Allowed file types and maximum file size (2MB)
-    var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    // var allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    var allowedTypes = [
+    'image/jpeg',
+    'image/png',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
     var maxSize = 2 * 1024 * 1024; // 2MB
 
     if (!allowedTypes.includes(fileType)) {

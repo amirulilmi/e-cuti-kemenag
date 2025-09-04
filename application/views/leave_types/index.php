@@ -55,7 +55,11 @@
                                                                         <td><span
                                                                                 style="font-weight: 600;"><?= $row['leave_type']; ?></span>
                                                                         </td>
-                                                                        <td><?= $row['assign_days']; ?></td>
+                                                                        <?php if (stripos($row['leave_type'], 'tahunan') !== false): ?>
+                                                                            <td><?= $row['assign_days']; ?></td>
+                                                                        <?php else: ?>
+                                                                                <td>-</td>
+                                                                        <?php endif; ?> 
                                                                         <td>
                                                                             <?php if ($row['leave_allowsat'] == 1): ?>
                                                                                 <span

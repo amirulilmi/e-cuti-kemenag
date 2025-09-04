@@ -457,7 +457,7 @@ class Leave extends CI_Controller
             echo '<div class="col-sm-12 text-center">
                     <img src="' . base_url('files/assets/images/no_data.png') . '" 
                          class="img-radius" alt="No Data Found" 
-                         style="width:200px; height:auto;">
+                         style="width:200px; height:auto;margin-bottom:200px">
                   </div>';
             return;
         }
@@ -701,6 +701,8 @@ class Leave extends CI_Controller
             'leave_status' => ($leave_status_filter !== null) ? $leave_status_filter : 'Show all'
         ];
 
+        // print_r($filters);exit;
+
         $leave_data = $this->Leave_model->get_leave_requests($filters);
         $leave_types = $this->Leave_model->get_leave_types();
 
@@ -755,6 +757,11 @@ class Leave extends CI_Controller
                 'Asia/Jakarta',
                 IntlDateFormatter::GREGORIAN
             );
+           if (stripos($leave_type_name, 'tahunan') !== false){
+            $available_days = $leave['available_days'];
+           }else{
+            $available_days = '-';
+           } ;
 
             $posting_date = $formatter->format(new DateTime($leave['created_date']));
 
@@ -790,7 +797,7 @@ class Leave extends CI_Controller
                     <h6 class="job-card-desc">Tipe Cuti: ' . $leave_type_name . '</h6>
                     <p class="text-muted">Pengajuan cuti ini berlaku untuk periode dari: <strong>' . $from_date . '</strong> sampai <strong>' . $to_date . '</strong></p>
                     <div class="job-meta-data"><i class="icofont icofont-safety"></i>Jumlah Hari Cuti diajukan: ' . $leave['requested_days'] . '</div>
-                    <div class="job-meta-data"><i class="icofont icofont-university"></i>SIsa Jatah Cuti: ' . $leave['available_days'] . '</div>
+                    <div class="job-meta-data"><i class="icofont icofont-university"></i>Sisa Jatah Cuti: ' . $available_days . '</div>
                     <div class="text-right">
                        <div class="dropdown-secondary dropdown">
                             <button onclick="window.location.href=\'' . base_url('Staff/profile/' . $leave['empid']) . '\'" 
@@ -805,7 +812,7 @@ class Leave extends CI_Controller
                                 data-expiry-date="' . $leave['to_date'] . '" 
                                 data-start-date="' . $leave['from_date']. '" 
                                 data-leave-reason="' . $leave['remarks'] . '" 
-                                data-leave-remaining="' . $leave['available_days'] . '" 
+                                data-leave-remaining="' . $available_days . '" 
                                 data-leave-staff="' . $leave['first_name'] . ' ' . $leave['middle_name'] . ' ' . $leave['last_name'] . '" 
                                 data-leave-type="' . $leave_type_name . '" 
                                 data-leave-status="' . $leave_status_text . '" 
