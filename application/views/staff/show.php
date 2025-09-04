@@ -43,11 +43,11 @@
                                                 <span class="text-white"><?php echo htmlspecialchars($employee['designation']); ?></span>
                                             </div>
                                         </div>
-                                        <?php if ($this->session->userdata('role') == 'Admin' || $this->session->userdata('role') == 'Staff'): ?>
+                                        
                                             <div class="pull-right cover-btn">
                                                 <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
                                             </div>
-                                        <?php endif; ?>    
+                                         
                                     </div>
                                 </div>
                             </div>
