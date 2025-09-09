@@ -156,6 +156,7 @@
                                         <li><strong>Hari Cuti di Ajukan: </strong> <span id="modalRequestedDays"></span>
                                         </li>
                                         <li><strong>Sisa Jatah Cuti: </strong> <span id="modalRemaining"></span></li>
+                                        <li><strong>Alasan Cuti: </strong> <span id="remarksUser"></span></li>
                                         <li><strong>Status: </strong> <span id="modalLeaveStatus"></span>
                                         </li>
                                     </ul>
@@ -520,6 +521,16 @@
             // Get the data attributes from the clicked link
             var leaveType = $(this).data('leave-type');
             var reason = $(this).data('leave-reason');
+
+            console.log('alasan cuti user adalah :' + reason);
+            // Isi alasan user kalau ada
+            if (reason) {
+                $('#remarksUser').text(reason);
+            } else {
+                $('#remarksUser').text(''); // kosongkan kalau null
+            }
+
+
             // var remaining = $(this).data('leave-remaining');
             if (leaveType.toLowerCase().includes("tahunan")) {
                 // kondisi kalau ada kata "tahunan"
