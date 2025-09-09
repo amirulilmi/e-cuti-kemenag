@@ -596,6 +596,7 @@ class Leave extends CI_Controller
                                       data-approval-file="' . $leave->file . '"
                                       data-sick-file="' . $leave->sick_file . '"
                                       data-remarks-admin="' . $leave->remarks_admin . '"
+                                     
                                       >
                                         <span class="point-marker bg-danger"></span>Review
                                    </a>';

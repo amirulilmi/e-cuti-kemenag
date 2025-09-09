@@ -171,7 +171,7 @@
                                             </li>
                                             
                                             <li><strong>Sisa Jatah Cuti: </strong> <span id="modalRemaing"></span></li>
-                                            
+                                            <li><strong>Alasan Cuti: </strong> <span id="remarksUser"></span></li>
                                             <li><strong>Status: </strong> <span id="modalLeaveStatus"></span></li>
                                         </ul>
 
@@ -427,7 +427,7 @@
                 $('#letterNumber').val(''); // kosongkan kalau null
             }
 
-            // Isi nomor surat kalau ada
+            // Isi alasan admin kalau ada
             if (remarksAdmin) {
                 $('#remarksAdmin').val(remarksAdmin);
             } else {
@@ -438,7 +438,13 @@
             var leaveType = $(this).data('leave-type');
             var reason = $(this).data('leave-reason');
 
-            
+            // Isi alasan user kalau ada
+            if (reason) {
+                $('#remarksUser').text(reason);
+            } else {
+                $('#remarksUser').text(''); // kosongkan kalau null
+            }
+
             if (leaveType.toLowerCase().includes("tahunan")) {
                 // kondisi kalau ada kata "tahunan"
                 var remaining = $(this).data('leave-remaining');
