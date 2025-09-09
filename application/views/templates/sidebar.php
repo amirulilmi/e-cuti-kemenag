@@ -85,6 +85,12 @@
                                 <span class="pcoded-mtext">Semua Cuti</span>
                             </a>
                         </li>
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                            <a href="<?php echo base_url('staff/profile/') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
+                                <span class="pcoded-mtext">Profile</span>
+                            </a>
+                        </li>
                         <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>
@@ -123,6 +129,12 @@
                                 <span class="pcoded-mtext">Template Surat</span>
                             </a>
                         </li>
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                            <a href="<?php echo base_url('staff/profile/') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
+                                <span class="pcoded-mtext">Profile</span>
+                            </a>
+                        </li>
                         <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>
@@ -139,15 +151,15 @@
                 <!-- KEPALA, MANAGER DAN PTSP-->
                 <?php if (in_array($this->session->userdata('role'), ['PTSP', 'Kepala', 'Manager'])): ?>
                     <?php if ($this->session->userdata('role') != 'Manager'): ?>
-                    <div class="pcoded-navigatio-lavel">Navigasi</div>
-                    <ul class="pcoded-item pcoded-left-item">
-                        <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('Dashboard') ?>">
-                                <span class="pcoded-micon"><i class="feather icon-home"></i></span>
-                                <span class="pcoded-mtext">Dashboard</span>
-                            </a>
-                        </li>
-                    </ul>
+                        <div class="pcoded-navigatio-lavel">Navigasi</div>
+                        <ul class="pcoded-item pcoded-left-item">
+                            <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
+                                <a href="<?php echo base_url('Dashboard') ?>">
+                                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                                    <span class="pcoded-mtext">Dashboard</span>
+                                </a>
+                            </li>
+                        </ul>
                     <?php endif; ?>
                     <ul class="pcoded-item pcoded-left-item">
                         <div class="pcoded-navigatio-lavel">Application</div>
@@ -177,6 +189,12 @@
                             <a href="<?php echo base_url('FAQ/index') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-folder"></i></span>
                                 <span class="pcoded-mtext">Template Surat</span>
+                            </a>
+                        </li>
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                            <a href="<?php echo base_url('staff/profile/') ?>">
+                                <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
+                                <span class="pcoded-mtext">Profile</span>
                             </a>
                         </li>
                         <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
