@@ -31,7 +31,7 @@ $config['base_url'] .= "://".$_SERVER['HTTP_HOST']."/dipecut/";
 
 /*s
 |--------------------------------------------------------------------------
-| Index Filee
+| Index Fileee
 |--------------------------------------------------------------------------
 |
 | Typically this will be your index.php file, unless you've renamed it to
