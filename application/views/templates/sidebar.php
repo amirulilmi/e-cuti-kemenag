@@ -85,13 +85,13 @@
                                 <span class="pcoded-mtext">Semua Cuti</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile d-lg-none">
                             <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
+                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout d-lg-none">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>
                                 <span class="pcoded-mtext">Logout</span>
@@ -129,13 +129,13 @@
                                 <span class="pcoded-mtext">Template Surat</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile d-lg-none">
                             <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
+                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout d-lg-none">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>
                                 <span class="pcoded-mtext">Logout</span>
@@ -191,13 +191,13 @@
                                 <span class="pcoded-mtext">Template Surat</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
+                        <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile d-lg-none">
                             <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
                         </li>
-                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
+                        <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout d-lg-none">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>
                                 <span class="pcoded-mtext">Logout</span>

@@ -1,6 +1,7 @@
 <!-- Main-body start -->
 <div class="main-body">
     <div class="page-wrapper">
+        
         <!-- Page-header start -->
         <div class="page-header">
             <div class="row align-items-end">
@@ -19,6 +20,7 @@
         </div>
         <!-- Page-header end -->
 
+        
         <!-- Page-body start -->
         <div class="page-body">
             <!--profile cover start-->
@@ -44,7 +46,7 @@
                                             </div>
                                         </div>
                                         
-                                            <div class="pull-right cover-btn">
+                                            <div class="pull-right cover-btn d-none d-sm-block">
                                                 <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
                                             </div>
                                          
@@ -60,14 +62,19 @@
             <div class="row">
                 <div class="col-lg-12">
                     <!-- tab header start -->
-                    <div class="tab-header card">
-                        <ul class="nav nav-tabs md-tabs tab-timeline" role="tablist" id="mytab">
+                    <div class="tab-header card d-none d-sm-block">
+                        <ul class="nav nav-tabs md-tabs tab-timeline " role="tablist" id="mytab">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">Personal Info</a>
                                 <div class="slide"></div>
                             </li>
                         </ul>
+                        
                     </div>
+
+                
+                        <button type="button" class="btn btn-primary m-r-10 m-b-5 d-lg-none" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
+                    
                     <!-- tab header end -->
                     
                     <!-- tab content start -->
