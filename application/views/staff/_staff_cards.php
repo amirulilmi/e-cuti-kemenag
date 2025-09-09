@@ -4,7 +4,7 @@
             <?php
             $imgPath = (!empty($staff['image_path']) && file_exists(FCPATH . ltrim($staff['image_path'], '/')))
                 ? base_url($staff['image_path'])
-                : base_url('uploads/images/default-avatar.jpg');
+                : base_url('uploads/images/default-user.jpg');
             $fullName = $staff['first_name'] . ' ' . $staff['last_name'];
             ?>
             <div class="col-lg-3 col-md-4 col-sm-6">

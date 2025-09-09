@@ -214,10 +214,13 @@
                                     <div class="team-section d-inline-block">
                                         <?php 
                                         $staffList = $this->Department_model->get_staff_by_department($department['id']);
-                                        foreach ($staffList as $staff):
-                                            $staffImage = base_url($staff['image_path']);
-                                            $staffName = $staff['first_name'].' '.$staff['last_name'];
-                                            echo "<a href='#'><img src='{$staffImage}' title='{$staffName}' class='m-l-5'></a>";
+                                        $limitedStaff = array_slice($staffList, 0, 7); // ambil 7 pertama
+                                        foreach ($limitedStaff as $staff):
+                                            $staffImage = (!empty($staff['image_path']) && file_exists(FCPATH . ltrim($staff['image_path'], '/')))
+                                            ? base_url($staff['image_path'])
+                                            : base_url('uploads/images/default-user.png'); // fallback kalau kosong/tidak ada
+                                            $staffName = $staff['first_name'] . ' ' . $staff['last_name'];
+                                            echo "<a href='#'><img src='{$staffImage}' title='{$staffName}' class='m-l-5' width='50' height='50'></a>";
                                         endforeach;
                                         ?>
                                     </div>
