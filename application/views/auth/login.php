@@ -386,15 +386,18 @@
                                         window.location = baseUrl + 'dashboard/reset_password';
                                     } else {
                                         // Redirect berdasarkan role user
-                                        if (response.role === 'admin' || response.role === 'manager') {
+                                        if (response.role === 'admin') {
                                             window.location = baseUrl + 'Dashboard';
                                         } else if (response.role === 'staff') {
-                                            window.location = baseUrl + 'Dashboard';
+                                            window.location = baseUrl + 'myLeave';
                                         } else if (response.role === 'kepala') {
                                             window.location = baseUrl + 'Dashboard';
                                         }
                                         else if (response.role === 'ptsp') {
                                             window.location = baseUrl + 'Dashboard';
+                                        }
+                                        else if (response.role === 'manager') {
+                                            window.location = baseUrl + 'Leave/myLeave';
                                         }
                                         else {
                                             Swal.fire({
