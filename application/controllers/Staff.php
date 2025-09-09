@@ -545,13 +545,15 @@ class Staff extends CI_Controller
 
         // tentukan nama status
         $statusMap = [
-            '0' => 'Pending Admin Approval',
-            '1' => 'Rejected by Admin',
-            '2' => 'Forwarded to Kepala',
-            '3' => 'Rejected by Kepala',
-            '4' => 'Approved',
-            '5' => 'Cancelled',
-            '6' => 'Recalled',
+            '0' => 'Pending Atasan Langsung Approval',
+            '1' => 'Rejected by Atasan Langsung',
+            '2' => 'Pending Admin Approval',
+            '3' => 'Rejected by Admin',
+            '4' => 'Forwarded to Kepala',
+            '5' => 'Rejected by Kepala',
+            '6' => 'Approved',
+            '7' => 'Cancelled',
+            '8' => 'Recalled',
         ];
         $selectedLeaveStatusName = $statusMap[$leaveStatusFilter] ?? 'Show all';
 

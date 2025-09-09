@@ -95,15 +95,6 @@
 
                 <!-- STAFF -->
                 <?php if ($this->session->userdata('role') == 'Staff'): ?>
-                    <div class="pcoded-navigatio-lavel">Navigation</div>
-                    <ul class="pcoded-item pcoded-left-item">
-                        <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
-                            <a href="<?php echo base_url('Dashboard') ?>">
-                                <span class="pcoded-micon"><i class="feather icon-home"></i></span>
-                                <span class="pcoded-mtext">Dashboard</span>
-                            </a>
-                        </li>
-                    </ul>
                     <ul class="pcoded-item pcoded-left-item">
                         <div class="pcoded-navigatio-lavel">Application</div>
                         <li
@@ -135,8 +126,9 @@
                 <?php endif; ?>
                 <!-- AKHIR STAFF -->
 
-                <!-- KEPALA DAN PTSP-->
+                <!-- KEPALA, MANAGER DAN PTSP-->
                 <?php if (in_array($this->session->userdata('role'), ['PTSP', 'Kepala', 'Manager'])): ?>
+                    <?php if ($this->session->userdata('role') != 'Manager'): ?>
                     <div class="pcoded-navigatio-lavel">Navigasi</div>
                     <ul class="pcoded-item pcoded-left-item">
                         <li class="<?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
@@ -146,6 +138,7 @@
                             </a>
                         </li>
                     </ul>
+                    <?php endif; ?>
                     <ul class="pcoded-item pcoded-left-item">
                         <div class="pcoded-navigatio-lavel">Application</div>
                         <li

@@ -271,7 +271,7 @@ class Leave extends CI_Controller
         }
 
         $config['upload_path'] = $uploadPath;
-        $config['allowed_types'] = 'jpg|jpeg|png|pdf';
+        $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
         $config['max_size'] = 2048; // 2MB
         $config['encrypt_name'] = true;
 
@@ -392,8 +392,8 @@ class Leave extends CI_Controller
 
         // tentukan nama status
         $statusMap = [
-            '0' => 'Pending Manager Approval',
-            '1' => 'Rejected by Manager',
+            '0' => 'Pending Atasan Langsung Approval',
+            '1' => 'Rejected by Atasan Langsung',
             '2' => 'Pending Admin Approval',
             '3' => 'Rejected by Admin',
             '4' => 'Forwarded to Kepala',
@@ -438,8 +438,8 @@ class Leave extends CI_Controller
         // exit;
         // Mapping status cuti
         $statusMap = [
-            '0' => 'Pending Manager Approval',
-            '1' => 'Rejected by Manager',
+            '0' => 'Pending Atasan Langsung Approval',
+            '1' => 'Rejected by Atasan Langsung',
             '2' => 'Pending Admin Approval',
             '3' => 'Rejected by Admin',
             '4' => 'Forwarded to Kepala',
@@ -473,12 +473,12 @@ class Leave extends CI_Controller
             // Konversi status ke text
             switch ($leave->leave_status) {
                 case 0:
-                    $leaveStatusText = 'Pending Manager Approval';
+                    $leaveStatusText = 'Pending Atasan Langsung Approval';
                     $badgeClass = 'bg-primary';
                     $iconClass = 'fa fa-hourglass-start';
                     break;
                 case 1:
-                    $leaveStatusText = 'Rejected by Manager';
+                    $leaveStatusText = 'Rejected by Atasan Langsung';
                     $badgeClass = 'badge-danger';
                     $iconClass = 'fa fa-ban';
                     break;
@@ -627,8 +627,8 @@ class Leave extends CI_Controller
         // $selected_leave_status_name = 'Show all';
         // if ($leave_status_filter !== 'Show all') {
         //     $status_names = [
-        //         '0' => 'Pending Manager Approval',
-        //         '1' => 'Rejected by Manager',
+        //         '0' => 'Pending Atasan Langsung Approval',
+        //         '1' => 'Rejected by Atasan Langsung',
         //         '2' => 'Pending Admin Approval',
         //         '3' => 'Rejected by Admin',
         //         '4' => 'Forwarded to Kepala',
@@ -647,7 +647,7 @@ class Leave extends CI_Controller
         if ($leave_status_filter === null) {
             $role = $this->session->userdata('role');
             if ($role === 'Manager') {
-                $leave_status_filter = '0'; // Pending Manager Approval
+                $leave_status_filter = '0'; // Pending Atasan Langsung Approval
             } elseif ($role === 'Kepala') {
                 $leave_status_filter = '4'; // Forwarded to Kepala
             } else {
@@ -657,8 +657,8 @@ class Leave extends CI_Controller
 
         // Get selected leave status name
         $status_names = [
-            '0' => 'Pending Manager Approval',
-            '1' => 'Rejected by Manager',
+            '0' => 'Pending Atasan Langsung Approval',
+            '1' => 'Rejected by Atasan Langsung',
             '2' => 'Pending Admin Approval',
             '3' => 'Rejected by Admin',
             '4' => 'Forwarded to Kepala',
@@ -681,8 +681,8 @@ class Leave extends CI_Controller
         ];
 
         $statusMap = [
-            '0' => 'Pending Manager Approval',
-            '1' => 'Rejected by Manager',
+            '0' => 'Pending Atasan Langsung Approval',
+            '1' => 'Rejected by Atasan Langsung',
             '2' => 'Pending Admin Approval',
             '3' => 'Rejected by Admin',
             '4' => 'Forwarded to Kepala',
@@ -769,7 +769,7 @@ class Leave extends CI_Controller
         foreach ($leave_data as $leave) {
             $image_path = empty($leave['image_path']) ? base_url('assets/images/user-card/img-round1.jpg') : base_url($leave['image_path']);
 
-            $status_names = [0 => 'Pending Manager Approval', 1 => 'Rejected by Manager', 2 => 'Pending Admin Approval', 3 => 'Rejected by Admin', 4 => 'Forwarded to Kepala', 5 => 'Rejected by Kepala', 6 => 'Approved', 7 => 'Cancelled', 8 => 'Recalled'];
+            $status_names = [0 => 'Pending Atasan Langsung Approval', 1 => 'Rejected by Atasan Langsung', 2 => 'Pending Admin Approval', 3 => 'Rejected by Admin', 4 => 'Forwarded to Kepala', 5 => 'Rejected by Kepala', 6 => 'Approved', 7 => 'Cancelled', 8 => 'Recalled'];
             $leave_status_text = $status_names[$leave['leave_status']];
 
             $badge_classes = [0 => 'bg-primary', 1 => 'bg-danger', 2 => 'bg-primary', 3 => 'bg-danger', 4 => 'bg-success', 5 => 'badge-danger', 6 => 'bg-success', 7 => 'badge-warning', 8 => 'badge-warning'];
@@ -898,8 +898,9 @@ class Leave extends CI_Controller
             }
 
             // buat nama file unik biar nggak ketimpa
-            $ext = pathinfo($_FILES['approvalFile']['name'], PATHINFO_EXTENSION);
-            $fileName = uniqid('approval_') . '.' . $ext;
+            // $ext = pathinfo($_FILES['approvalFile']['name'], PATHINFO_EXTENSION);
+            $fileName = basename($_FILES['approvalFile']['name']);
+            // $fileName = uniqid('approval_') . '.' . $ext;
             $targetPath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES['approvalFile']['tmp_name'], $targetPath)) {

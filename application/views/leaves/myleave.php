@@ -109,10 +109,10 @@
                                     <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Show all') ? 'active' : ''; ?>"
                                         href="?leave_status=Show all">Show all</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Pending Manager Approval') ? 'active' : ''; ?>"
-                                        href="?leave_status=0">Pending Manager Approval</a>
-                                    <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Rejected by Manager') ? 'active' : ''; ?>"
-                                        href="?leave_status=1">Rejected by Manager</a>
+                                    <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Pending Atasan Langsung Approval') ? 'active' : ''; ?>"
+                                        href="?leave_status=0">Pending Atasan Langsung Approval</a>
+                                    <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Rejected by Atasan Langsung') ? 'active' : ''; ?>"
+                                        href="?leave_status=1">Rejected by Atasan Langsung</a>
                                     <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Pending Admin Approval') ? 'active' : ''; ?>"
                                         href="?leave_status=2">Pending Admin Approval</a>
                                     <a class="dropdown-item <?php echo ($selectedLeaveStatusName === 'Rejected by Admin') ? 'active' : ''; ?>"
@@ -460,8 +460,8 @@
 
             // Map leave status strings to numeric values
             var statusMap = {
-                "Pending Manager Approval": 0,
-                "Rejected by Manager": 1,
+                "Pending Atasan Langsung Approval": 0,
+                "Rejected by Atasan Langsung": 1,
                 "Pending Admin Approval": 2,
                 "Rejected by Admin": 3,
                 "Forwarded to Kepala": 4,
@@ -498,10 +498,10 @@
             var formattedEndDate = formatDate(endDate);
 
             switch (leaveStatus) {
-                case "Pending Manager Approval":
+                case "Pending Atasan Langsung Approval":
                     $('#modalLeaveStatus').addClass('text-primary');
                     break;
-                case "Rejected by Manager":
+                case "Rejected by Atasan Langsung":
                     $('#modalLeaveStatus').addClass('text-danger');
                     break;
                 case "Pending Admin Approval":
@@ -532,14 +532,14 @@
 
             var modalMessage;
             switch (leaveStatusValue) {
-                case 0: // Pending Manager Approval
+                case 0: // Pending Atasan Langsung Approval
                     if (today > endDate) {
                         modalMessage = "Pengajuan cuti Anda diajukan pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> Masih menunggu, tetapi periode cuti yang diajukan sudah lewat. Terlalu terlambat untuk menyetujui atau menolak permintaan ini.";
                     } else {
                         modalMessage = "Pengajuan cuti Anda yang belum diproses, diajukan pada  <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b>. Silakan mengingatkan atasan Anda jika pengajuan cuti ini memerlukan waktu lama untuk ditinjau.";
                     }
                     break;
-                case 1: // Rejected by Manager
+                case 1: // Rejected by Atasan Langsung
                     modalMessage = "Pengajuan cuti Anda diajukan pada <b>" + formattedSubmissionDate + "</b> untuk periode dari <b>" + formattedStartDate + "</b> sampai <b>" + formattedEndDate + "</b> telah ditolak oleh admin.";
                     break;
                 case 2: // Pending Admin Approval
@@ -579,18 +579,18 @@
             $('#modalMessage').html(modalMessage);
 
             // Determine if options should be shown based on leave status and dates
-            if (leaveStatusValue === 0) { // Pending Manager Approval
+            if (leaveStatusValue === 0) { // Pending Atasan Langsung Approval
                 if (today <= endDate) {
                     $('#radioButtonsContainer').append(`
                             <select name="select" id="select" class="form-control form-control-primary">
-                                <option value="0" selected>Pending Manager Approval</option>
+                                <option value="0" selected>Pending Atasan Langsung Approval</option>
                                 <option value="7">Cancelled</option>
                             </select>
                         `);
                 } else {
                     $('#radioButtonsContainer').append(`
                             <select name="select" id="select" class="form-control form-control-primary" disabled>
-                                <option value="0" selected>Pending Manager Approval</option>
+                                <option value="0" selected>Pending Atasan Langsung Approval</option>
                             </select>
                         `);
                 }
@@ -606,14 +606,14 @@
 
             // Update the button based on the status and date
             var updateButtonHTML;
-            if (leaveStatusValue === 0) { // Pending Manager Approval
+            if (leaveStatusValue === 0) { // Pending Atasan Langsung Approval
                 if (today > endDate) {
                     updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> PASSED </b></button>';
                 } else {
                     updateButtonHTML = '<button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center status-update">Update</button>';
                 }
             }
-            else if (leaveStatusValue === 1) { // Rejected by Manager
+            else if (leaveStatusValue === 1) { // Rejected by Atasan Langsung
                 updateButtonHTML = '<button type="button" class="btn btn-disabled btn-md btn-block waves-effect text-center status-update" disabled>This request was <b style="color: #eb3422;"> REJECTED </b></button>';
             }
             if (leaveStatusValue === 2) { // Pending Admin Approval

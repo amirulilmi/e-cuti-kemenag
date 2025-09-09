@@ -350,8 +350,8 @@ class Leave_model extends CI_Model
         // Apply leave status filter
         if (isset($filters['leave_status']) && $filters['leave_status'] !== 'Show all') {
             $status_map = [
-                '0' => 'Pending Manager Approval',
-                '1' => 'Rejected by Manager',
+                '0' => 'Pending Atasan Langsung Approval',
+                '1' => 'Rejected by Atasan Langsung',
                 '2' => 'Pending Admin Approval',
                 '3' => 'Rejected by Admin',
                 '4' => 'Forwarded to Kepala',
