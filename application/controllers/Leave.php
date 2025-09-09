@@ -265,53 +265,55 @@ class Leave extends CI_Controller
 
     private function _handleFileUpload($isUpdate = false)
     {
-        $uploadPath = './uploads/leave_files/';
+        $uploadPath = './uploads/document/approval_file/';
+        $relativePath = 'uploads/document/approval_file/'; // ini yang disimpan ke DB
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0755, true);
         }
-
-        $config['upload_path'] = $uploadPath;
+    
+        $config['upload_path']   = $uploadPath;
         $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
-        $config['max_size'] = 2048; // 2MB
-        $config['encrypt_name'] = true;
-
+        $config['max_size']      = 2048; // 2MB
+        $config['encrypt_name']  = false;
+    
         $this->load->library('upload', $config);
-
+    
         $files = [];
         $uploadErrors = [];
-
+    
         // Handle sick file
         if (!empty($_FILES['sick_file']['name'])) {
             if ($this->upload->do_upload('sick_file')) {
                 $uploadData = $this->upload->data();
-                $files['sick_file'] = $uploadData['file_name'];
+                $files['sick_file'] = $relativePath . $uploadData['file_name']; // simpan lengkap dengan path
             } else {
                 $uploadErrors[] = 'Sick file: ' . $this->upload->display_errors('', '');
             }
         }
-
+    
         // Handle approve file
         if (!empty($_FILES['approve_file']['name'])) {
             if ($this->upload->do_upload('approve_file')) {
                 $uploadData = $this->upload->data();
-                $files['file'] = $uploadData['file_name'];
+                $files['file'] = $relativePath . $uploadData['file_name']; // simpan lengkap dengan path
             } else {
                 $uploadErrors[] = 'Approve file: ' . $this->upload->display_errors('', '');
             }
         }
-
+    
         if (!empty($uploadErrors)) {
             return [
                 'success' => false,
                 'message' => 'Upload error: ' . implode(', ', $uploadErrors)
             ];
         }
-
+    
         return [
             'success' => true,
-            'files' => $files
+            'files'   => $files
         ];
     }
+    
     public function loadLeaveTypes()
     {
 
@@ -533,10 +535,13 @@ class Leave extends CI_Controller
                 'id_ID',
                 IntlDateFormatter::LONG,
                 IntlDateFormatter::NONE,
-                'Asia/Jakarta',
+                null,
                 IntlDateFormatter::GREGORIAN
             );
+            // $data_date = $leave->created_date;
+            // print_r($data_date);exit;
 
+            // print_r($postingDate);exit;
             $postingDate = $formatter->format(new DateTime($leave->created_date));
 
             $toDate = $formatter->format(new DateTime($leave->to_date));
@@ -785,7 +790,7 @@ class Leave extends CI_Controller
                 'id_ID',
                 IntlDateFormatter::LONG,
                 IntlDateFormatter::NONE,
-                'Asia/Jakarta',
+                null,
                 IntlDateFormatter::GREGORIAN
             );
             if (stripos($leave_type_name, 'tahunan') !== false) {
@@ -795,7 +800,10 @@ class Leave extends CI_Controller
             }
             ;
 
-            $posting_date = $formatter->format(new DateTime($leave['created_date']));
+            $datetime = new DateTime($leave['created_date'], new DateTimeZone('UTC'));
+            $datetime->setTimezone(new DateTimeZone('Asia/Jakarta'));
+            $posting_date = $formatter->format($datetime);
+            // $posting_date = $formatter->format(new DateTime($leave['created_date']));
 
             $to_date = $formatter->format(new DateTime($leave['to_date']));
             $from_date = $formatter->format(new DateTime($leave['from_date']));
