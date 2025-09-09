@@ -123,11 +123,6 @@
                                 <span class="pcoded-mtext">Template Surat</span>
                             </a>
                         </li>
-                        <li class="mobile-logout">
-                            <a href="<?php echo site_url('auth/logout'); ?>">
-                                <i class="feather icon-log-out"></i> Logout
-                            </a>
-                        </li>
                         <li class="<?php echo ($page_name == 'logout') ? 'active' : ''; ?> mobile-logout">
                             <a href="<?php echo base_url('auth/logout') ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-log-out"></i></span>

@@ -149,15 +149,21 @@
                 <!-- Detailed Leave start -->
                 <div id="detailed-leave" class="modal fade" role="dialog">
                     <div class="modal-dialog">
+
                         <div class="login-card card-block login-card-modal">
+                            
                             <form class="md-float-material">
                                 <div class="card m-t-15">
                                     <div class="auth-box card-block">
                                         <div class="row m-b-20">
                                             <div class="col-md-12 confirm">
+                                                <button type="button" class="close ml-2" data-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;margin-top:-10px">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                                 <h3 class="text-center txt-primary"><i
                                                         class="icofont icofont-check-circled text-primary"></i> Detail
                                                     Pengajuan Cuti</h3>
+                                                    
                                             </div>
                                         </div>
                                         <input hidden type="text" class="form-control leave-id" name="leave-id">
@@ -188,7 +194,7 @@
 
                                             <!-- New input for sick file -->
                                             <div class="mb-3" id="sickFileInfo"
-                                                style="display:none;width:410px;margin-left:-14px">
+                                                style="display:none;margin-left:-14px">
                                                 <label for="sickFile"><strong>Dokumen Tambahan/ Surat Sakit</strong></label>
                                                 <div class="d-flex">
                                                     <input type="text" class="form-control" id="sickFileName" readonly>
@@ -199,7 +205,7 @@
 
                                             <!-- New input for uploading Approval Letter -->
                                             <div class="mb-3" id="approvalFileInfo" class="mb-2"
-                                                style="display:none;width:410px;margin-left:-14px">
+                                                style="display:none;margin-left:-14px">
                                                 <label for="approvalFile"><strong>Surat
                                                         Persetujuan/ Pengajuan</strong></label>
                                                 <div class="d-flex mb-2">
