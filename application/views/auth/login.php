@@ -389,7 +389,7 @@
                                         if (response.role === 'admin') {
                                             window.location = baseUrl + 'Dashboard';
                                         } else if (response.role === 'staff') {
-                                            window.location = baseUrl + 'myLeave';
+                                            window.location = baseUrl + 'Leave/myLeave';
                                         } else if (response.role === 'kepala') {
                                             window.location = baseUrl + 'Dashboard';
                                         }
