@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
-                            <a href="<?php echo base_url('staff/profile/') ?>">
+                            <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
@@ -130,7 +130,7 @@
                             </a>
                         </li>
                         <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
-                            <a href="<?php echo base_url('staff/profile/') ?>">
+                            <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
@@ -192,7 +192,7 @@
                             </a>
                         </li>
                         <li class="<?php echo ($page_name == 'profile') ? 'active' : ''; ?> mobile-profile">
-                            <a href="<?php echo base_url('staff/profile/') ?>">
+                            <a href="<?php echo site_url('staff/profile/' . $this->session->userdata('emp_id')); ?>">
                                 <span class="pcoded-micon"><i class="feather  icon-user"></i></span>
                                 <span class="pcoded-mtext">Profile</span>
                             </a>
