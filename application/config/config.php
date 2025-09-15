@@ -31,7 +31,7 @@ $config['base_url'] = 'http://localhost/e-cuti-kemenag/';
 
 /*s
 |--------------------------------------------------------------------------
-| Index Fileee
+| Index Fileeee
 |--------------------------------------------------------------------------
 |
 | Typically this will be your index.php file, unless you've renamed it to

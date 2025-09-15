@@ -21,8 +21,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-block">
-                            <div class="j-wrapper j-wrapper-640">
+                        
+                            
                                 <form method="post" class="j-pro" id="j-pro" enctype="multipart/form-data" novalidate="">
                                     <div class="j-content">
                                         <div class="j-wrapper">
@@ -161,9 +161,9 @@
                                     </div>
                                     <!-- end /.footer -->
                                 </form>
-                            </div>
+                            
                             <label class="col-sm-5"></label>
-                        </div>
+                       
                     </div>
                     <!-- Basic Inputs Validation end -->
                 </div>
