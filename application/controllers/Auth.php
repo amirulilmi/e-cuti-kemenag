@@ -18,6 +18,13 @@ class Auth extends CI_Controller
 
     public function login()
     {
+        // print_r('asd');exit;
+        // echo json_encode([
+        //     'status' => 'success',
+        //     'message' => 'Auth login endpoint working',
+        //     'role' => 'staff',
+        //     'password_reset' => true
+        // ]);
         header("Access-Control-Allow-Origin: *"); // Atau spesifik: http://e-cuti-kemenag.test
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
@@ -27,10 +34,10 @@ class Auth extends CI_Controller
             exit;
         }
 
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('email', 'NIP', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
 
-        // print_r('asd');exit;
+       
         if ($this->form_validation->run() == FALSE) {
             echo json_encode(array('status' => 'error', 'message' => validation_errors()));
             return;
@@ -86,7 +93,7 @@ class Auth extends CI_Controller
             }
           
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Email atau Password Salah'));
+            echo json_encode(array('status' => 'error', 'message' => 'NIP atau Password Salah'));
         }
     }
 

@@ -23,9 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = 'http://localhost/dipecut/';
-$config['base_url']  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
-$config['base_url'] .= "://".$_SERVER['HTTP_HOST']."/dipecut/";
+$config['base_url'] = 'http://localhost/e-cuti-kemenag/';
+// $config['base_url']  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+// $config['base_url'] .= "://".$_SERVER['HTTP_HOST']."/dipecut/";
 
 
 

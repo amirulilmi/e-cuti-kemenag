@@ -36,7 +36,7 @@ class Employee_model extends CI_Model {
     
     public function authenticate($email, $password) {
         $password = md5($password);
-        return $this->db->where('email_id', $email)
+        return $this->db->where('staff_id', $email)
                         ->where('password', $password)
                         ->get('tblemployees')
                         ->row();
