@@ -187,7 +187,9 @@
                                             </div>
                                         </div>
                                     <?php endif; ?>
-                                    <!-- <h4 class="sub-title">Is Supervisor? *</h4>
+                                    
+                                    <?php if ($session_role == 'Admin'): ?>
+                                    <h4 class="sub-title">Apakah Atasan? *</h4>
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-12">
                                                                         <div class="form-radio">
@@ -205,8 +207,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div> -->
-
+                                                                </div>
+                                    
                                     <h4 class="sub-title">Role <span class="text-danger">*</span></h4>
                                     <div class="form-group row">
                                         <div class="col-sm-12">
@@ -235,17 +237,19 @@
                                                         <i class="helper"></i>Manager
                                                     </label>
                                                 </div>
-                                                <?php if ($session_role == 'Admin'): ?>
+                                                
                                                     <div class="radio radiofill radio-inline">
                                                         <label>
                                                             <input type="radio" name="role" value="Admin" <?php echo (isset($staff['role']) && $staff['role'] === 'Admin') ? 'checked="checked"' : ''; ?>>
                                                             <i class="helper"></i>Admin
                                                         </label>
                                                     </div>
-                                                <?php endif; ?>
+                                               
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
                             <div class="row">

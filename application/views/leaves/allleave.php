@@ -682,19 +682,49 @@
             // Determine if options should be shown based pada leave status and dates
             if (leaveStatusValue === 0) { // Pending Atasan Langsung Approval
                 if (today <= endDate) {
-                    $('#radioButtonsContainer').append(`
-                        <select name="select" id="select" class="form-control form-control-primary">
-                            <option value="0" selected>Pending Atasan Langsung Approval</option>
-                            <option value="1">Rejected by Atasan Langsung</option>
-                            <option value="2">Pending Admin Approval</option>
+                    // $('#radioButtonsContainer').append(`
+                    //     <select name="select" id="select" class="form-control form-control-primary">
+                    //         <option value="0" selected>Pending Atasan Langsung Approval</option>
+                    //         <option value="1">Rejected by Atasan Langsung</option>
+                    //         <option value="2">Pending Admin Approval</option>
+                    //         <option value="3">Rejected by Admin</option>
+                    //         <option value="4">Forwarded to Kepala</option>
+                    //         <option value="5">Rejected by Kepala</option>
+                    //         <option value="6">Approved</option>
+                    //         <option value="7">Cancelled</option>
+                    //         <option value="8">Recalled</option>
+                    //     </select>
+                    // `);
+                    let role = "<?php echo $this->session->userdata('role'); ?>";
+                    let options = `
+                        <option value="0" selected>Pending Atasan Langsung Approval</option>
+                        <option value="1">Rejected by Atasan Langsung</option>
+                        <option value="2">Pending Admin Approval</option>
+                    `;
+                    // Jika bukan Manager → tambahkan opsi forwarded sampai recalled
+                    if (role !== 'Manager') {
+                        options += `
                             <option value="3">Rejected by Admin</option>
                             <option value="4">Forwarded to Kepala</option>
                             <option value="5">Rejected by Kepala</option>
                             <option value="6">Approved</option>
-                            <option value="7">Cancelled</option>
-                            <option value="8">Recalled</option>
+                        `;
+
+                        // Jika role = Admin → tambah Cancelled & Recalled
+                        if (role === 'Admin') {
+                            options += `
+                                
+                                <option value="8">Recalled</option>
+                            `;
+                        }
+                    }
+
+                    $('#radioButtonsContainer').append(`
+                        <select name="select" id="select" class="form-control form-control-primary">
+                            ${options}
                         </select>
                     `);
+
                 } else {
                     $('#radioButtonsContainer').append(`
                         <select name="select" id="select" class="form-control form-control-primary" disabled>
@@ -713,7 +743,7 @@
                             <option value="4">Forwarded to Kepala</option>
                             <option value="5">Rejected by Kepala</option>
                             <option value="6">Approved</option>
-                            <option value="7">Cancelled</option>
+                            
                             <option value="8">Recalled</option>
                         </select>
                     `);

@@ -259,7 +259,7 @@
 
                                 <div class="form-group form-primary mb-3">
                                     <input type="text" id="nip" name="nip" class="form-control email" required
-                                        placeholder="Email">
+                                        placeholder="NIP">
                                     <span class="form-bar"></span>
                                 </div>
                                 <div class="form-group form-primary mb-3">
@@ -347,18 +347,18 @@
                     });
                     return;
                 }
-                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(data.email)) {
-                    Swal.fire({
-                        icon: 'warning',
-                        text: 'Silahkan Masukkan Alamat Email yang Valid',
-                        confirmButtonColor: '#ffc107',
-                        confirmButtonText: 'OK'
-                    });
-                    return;
-                }
+                // var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // if (!emailRegex.test(data.email)) {
+                //     Swal.fire({
+                //         icon: 'warning',
+                //         text: 'Silahkan Masukkan Alamat Email yang Valid',
+                //         confirmButtonColor: '#ffc107',
+                //         confirmButtonText: 'OK'
+                //     });
+                //     return;
+                // }
                 $.ajax({
-                    url: '<?= base_url("auth/login"); ?>',
+                    url: '<?= base_url("Auth/login"); ?>',
                     type: 'post',
                     data: data,
                     dataType: 'json',
