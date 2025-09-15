@@ -46,9 +46,13 @@
                                             </div>
                                         </div>
                                         
+                                            <!-- button untuk website -->
                                             <div class="pull-right cover-btn d-none d-sm-block">
                                                 <button type="button" class="btn btn-primary m-r-10 m-b-5" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
+                                                <a href="<?= site_url('staff/form/' . $this->session->userdata('emp_id') ) ?>" class="btn btn-warning m-r-10 m-b-5">Edit Profile</a>
                                             </div>
+                                            <!-- button untuk website -->
+
                                          
                                     </div>
                                 </div>
@@ -72,9 +76,10 @@
                         
                     </div>
 
-                
-                        <button type="button" class="btn btn-primary m-r-10 m-b-5 d-lg-none" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
                     
+                        <!-- button untuk mobile -->
+                        <button type="button" class="btn btn-primary m-r-10 m-b-5 d-lg-none" data-toggle="modal" data-target="#change-password-dialog">Ubah Password</button>
+                        <a href="<?= site_url('staff/form/' . $this->session->userdata('emp_id') ) ?>" class="btn btn-warning m-r-10 m-b-5 d-lg-none">Edit Profile</a>
                     <!-- tab header end -->
                     
                     <!-- tab content start -->
