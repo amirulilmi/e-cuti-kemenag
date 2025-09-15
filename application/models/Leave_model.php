@@ -338,7 +338,8 @@ class Leave_model extends CI_Model
         // Apply role-based conditions
         if (isset($filters['user_role']) && $filters['user_role'] !== 'Admin') {
             if ($filters['user_role'] === 'Manager') {
-                $this->db->where('e.department', $filters['user_department']);
+                // $this->db->where('e.department', $filters['user_department']);
+                $this->db->where('e.supervisor_id', $filters['user_id']);
                 $this->db->where('l.empid !=', $filters['user_id']);
             } 
             // elseif (isset($filters['is_supervisor']) && $filters['is_supervisor'] == 1) {
