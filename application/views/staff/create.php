@@ -187,7 +187,9 @@
                                             </div>
                                         </div>
                                     <?php endif; ?>
-                                    <!-- <h4 class="sub-title">Is Supervisor? *</h4>
+                                    
+                                    <?php if ($session_role == 'Admin'): ?>
+                                    <h4 class="sub-title">Apakah Atasan? *</h4>
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-12">
                                                                         <div class="form-radio">
@@ -205,8 +207,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div> -->
-                                    <?php if ($session_role == 'Admin'): ?>
+                                                                </div>
+                                    
                                     <h4 class="sub-title">Role <span class="text-danger">*</span></h4>
                                     <div class="form-group row">
                                         <div class="col-sm-12">

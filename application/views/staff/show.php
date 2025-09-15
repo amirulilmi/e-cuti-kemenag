@@ -89,11 +89,11 @@
                                 <div class="col-xl-4">
                                     <!-- user contact card left side start -->
                                     <div class="card">
-                                        <?php if ($user_role === 'Adminn'): ?>
+                                        <?php if ($user_role === 'Admin'): ?>
                                         <div class="card-block groups-contact" style="margin-bottom:-43px">
                                             <div class="card-header">
                                                 
-                                                <h5 class="card-header-text">Assigned Supervisor</h5>
+                                                <h5 class="card-header-text">Assigned Atasan Langsung</h5>
                                                     <button data-toggle="modal" data-target="#edit-supervisor" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right">
                                                         <i class="icofont icofont-settings"></i>
                                                     </button>
@@ -255,7 +255,7 @@
                                                                                             <td><?php echo htmlspecialchars($employee['designation']); ?></td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <th scope="row">Is Supervisor?</th>
+                                                                                            <th scope="row">Apakah Atasan?</th>
                                                                                             <td><?php echo htmlspecialchars($employee['is_supervisor'] == 1 ? 'Yes' : 'No'); ?></td>
                                                                                         </tr>
                                                                                     </tbody>
